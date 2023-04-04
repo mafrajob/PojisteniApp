@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PojisteniApp.Models;
 
 namespace PojisteniApp.Data
 {
@@ -9,5 +10,6 @@ namespace PojisteniApp.Data
             : base(options)
         {
         }
+        public DbSet<PojisteniApp.Models.Person> Person { get; set; } = default!;
     }
 }

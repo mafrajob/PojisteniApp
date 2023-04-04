@@ -6,7 +6,7 @@
 
         public InsuranceType InsuranceType { get; set; } = new InsuranceType();
 
-        public decimal InsuranceAmount { get; set; }
+        public int InsuranceAmount { get; set; }
 
         public string InsuranceSubject { get; set; } = string.Empty;
 
