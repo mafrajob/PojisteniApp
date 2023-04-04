@@ -12,6 +12,6 @@
 
         public DateTime ValidFrom { get; set; } = DateTime.MinValue;
 
-        public DateTime ValidUntil { get; set; } = DateTime.MaxValue;
+        public DateTime ValidTo { get; set; } = DateTime.MaxValue;
     }
 }

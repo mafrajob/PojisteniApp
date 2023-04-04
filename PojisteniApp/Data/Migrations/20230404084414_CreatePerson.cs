@@ -53,7 +53,7 @@ namespace PojisteniApp.Data.Migrations
                     InsuranceAmount = table.Column<int>(type: "int", nullable: false),
                     InsuranceSubject = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     ValidFrom = table.Column<DateTime>(type: "datetime2(2)", nullable: false),
-                    ValidUntil = table.Column<DateTime>(type: "datetime2(2)", nullable: false),
+                    ValidTo = table.Column<DateTime>(type: "datetime2(2)", nullable: false),
                     InsuredPersonId = table.Column<int>(type: "int", nullable: false),
                     PolicyholderPersonId = table.Column<int>(type: "int", nullable: false)
                 },
