@@ -56,7 +56,7 @@ namespace PojisteniApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Address,City,PostalCode")] Person person)
+        public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace PojisteniApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonId,FirstName,LastName,Email,Phone,Address,City,PostalCode")] Person person)
+        public async Task<IActionResult> Edit(int id, [Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
             if (id != person.PersonId)
             {
