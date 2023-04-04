@@ -34,7 +34,7 @@ namespace PojisteniApp.Data.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
