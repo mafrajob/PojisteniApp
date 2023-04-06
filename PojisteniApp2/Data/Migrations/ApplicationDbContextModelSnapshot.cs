@@ -258,7 +258,7 @@ namespace PojisteniApp2.Data.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Insurance");
+                    b.ToTable("Insurance", (string)null);
                 });
 
             modelBuilder.Entity("PojisteniApp2.Models.InsuranceType", b =>
@@ -276,7 +276,7 @@ namespace PojisteniApp2.Data.Migrations
 
                     b.HasKey("InsuranceTypeId");
 
-                    b.ToTable("InsuranceType");
+                    b.ToTable("InsuranceType", (string)null);
                 });
 
             modelBuilder.Entity("PojisteniApp2.Models.Person", b =>
@@ -324,7 +324,7 @@ namespace PojisteniApp2.Data.Migrations
 
                     b.HasKey("PersonId");
 
-                    b.ToTable("Person");
+                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

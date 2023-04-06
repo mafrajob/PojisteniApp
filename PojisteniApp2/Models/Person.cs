@@ -17,8 +17,8 @@ namespace PojisteniApp2.Models
         [StringLength(50, ErrorMessage = "Maximální délka příjmení je 50 znaků")]
         public string LastName { get; set; } = string.Empty;
 
-        [Display(Name = "Jméno a příjmení")]
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
+        [Display(Name = "Celé jméno")]
+        public string FullName { get { return $"{LastName} {FirstName}"; } }
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "Vyplňte e-mail")]
@@ -48,6 +48,9 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Bydliště")]
         public string Address { get { return $"{Street}, {City}"; } }
+
+        [Display(Name = "Celé jméno a bydliště")]
+        public string FullNameWithAddress { get { return $"{FullName} ({Address})"; } }
 
         public ICollection<Insurance> Insurances { get; set; } = new List<Insurance>();
     }

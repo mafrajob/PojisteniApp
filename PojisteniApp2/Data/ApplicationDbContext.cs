@@ -12,5 +12,6 @@ namespace PojisteniApp2.Data
         }
         public DbSet<PojisteniApp2.Models.Person> Person { get; set; } = default!;
         public DbSet<PojisteniApp2.Models.Insurance> Insurance { get; set; } = default!;
+        public DbSet<PojisteniApp2.Models.InsuranceType> InsuranceType { get; set; } = default!;
     }
 }

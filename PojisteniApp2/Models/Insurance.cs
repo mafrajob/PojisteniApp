@@ -6,6 +6,7 @@ namespace PojisteniApp2.Models
     {
         public int InsuranceId { get; set; }
 
+        [Display(Name = "Typ pojištění")]
         public int InsuranceTypeId { get; set; }
 
         [Display(Name = "Pojištění")]
@@ -27,6 +28,7 @@ namespace PojisteniApp2.Models
         [Required(ErrorMessage = "Vyplňte platnost do")]
         public DateTime ValidTo { get; set; } = DateTime.MaxValue;
 
+        [Display(Name = "Pojištěnec")]
         public int PersonId { get; set; }
 
         public Person Person { get; set; } = new Person();

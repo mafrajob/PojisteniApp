@@ -49,8 +49,8 @@ namespace PojisteniApp2.Controllers
         // GET: Insurances/Create
         public IActionResult Create()
         {
-            ViewData["InsuranceTypeId"] = new SelectList(_context.Set<InsuranceType>(), "InsuranceTypeId", "InsuranceTypeId");
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City");
+            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName");
+            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress");
             return View();
         }
 
@@ -61,14 +61,25 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
         {
+            var person = await _context.Person
+                .FirstOrDefaultAsync(m => m.PersonId == insurance.PersonId);
+            var insuranceType = await _context.InsuranceType
+                .FirstOrDefaultAsync(m => m.InsuranceTypeId == insurance.InsuranceTypeId);
+            
+            if (person != null && insuranceType != null)
+            {
+                insurance.Person = person;
+                insurance.InsuranceType = insuranceType;
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.Set<InsuranceType>(), "InsuranceTypeId", "InsuranceTypeId", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City", insurance.PersonId);
+            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
+            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
             return View(insurance);
         }
 
@@ -85,7 +96,7 @@ namespace PojisteniApp2.Controllers
             {
                 return NotFound();
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.Set<InsuranceType>(), "InsuranceTypeId", "InsuranceTypeId", insurance.InsuranceTypeId);
+            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City", insurance.PersonId);
             return View(insurance);
         }
@@ -122,7 +133,7 @@ namespace PojisteniApp2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.Set<InsuranceType>(), "InsuranceTypeId", "InsuranceTypeId", insurance.InsuranceTypeId);
+            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City", insurance.PersonId);
             return View(insurance);
         }
