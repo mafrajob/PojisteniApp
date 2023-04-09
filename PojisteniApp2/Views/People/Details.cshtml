@@ -58,3 +58,35 @@
     <a asp-action="Edit" asp-route-id="@Model?.PersonId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Pojištění
+            </th>
+            <th>
+                Částka
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Insurances)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsuranceAmount)
+                </td>
+                <td>
+                    <a asp-controller="Insurances" asp-action="Edit" asp-route-id="@item.InsuranceId">Edit</a> |
+                    <a asp-controller="Insurances" asp-action="Details" asp-route-id="@item.InsuranceId">Details</a> |
+                    <a asp-controller="Insurances" asp-action="Delete" asp-route-id="@item.InsuranceId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

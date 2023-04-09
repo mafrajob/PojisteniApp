@@ -42,6 +42,16 @@ namespace PojisteniApp2.Controllers
                 return NotFound();
             }
 
+            // Find insurances of the selected person in the database
+            person.Insurances = _context.Insurance.Where(i => i.PersonId == id).ToList();
+
+            foreach (Insurance insurance in person.Insurances)
+            {
+                // Find insurance type details for each of the person's insurances
+                insurance.InsuranceType = await _context.InsuranceType
+                    .FirstOrDefaultAsync(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
+            }
+
             return View(person);
         }
 
