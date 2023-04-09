@@ -10,7 +10,7 @@ namespace PojisteniApp2.Models
         public int InsuranceTypeId { get; set; }
 
         [Display(Name = "Pojištění")]
-        public InsuranceType InsuranceType { get; set; } = new InsuranceType();
+        public InsuranceType? InsuranceType { get; set; }
 
         [Display(Name = "Částka")]
         public int InsuranceAmount { get; set; }
@@ -31,6 +31,6 @@ namespace PojisteniApp2.Models
         [Display(Name = "Pojištěnec")]
         public int PersonId { get; set; }
 
-        public Person Person { get; set; } = new Person();
+        public Person? Person { get; set; }
     }
 }

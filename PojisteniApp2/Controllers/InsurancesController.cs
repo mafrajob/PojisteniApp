@@ -61,17 +61,6 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
         {
-            var person = await _context.Person
-                .FirstOrDefaultAsync(m => m.PersonId == insurance.PersonId);
-            var insuranceType = await _context.InsuranceType
-                .FirstOrDefaultAsync(m => m.InsuranceTypeId == insurance.InsuranceTypeId);
-            
-            if (person != null && insuranceType != null)
-            {
-                insurance.Person = person;
-                insurance.InsuranceType = insuranceType;
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Add(insurance);
