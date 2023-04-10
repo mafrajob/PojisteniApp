@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<PojisteniApp2.Models.Person>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pojištěnci";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Nový pojištěnec</a>
 </p>
 <table class="table">
     <thead>
@@ -31,8 +31,8 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PersonId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.PersonId">Delete</a>
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.PersonId">Editovat</a>
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.PersonId">Odstranit</a>
             </td>
         </tr>
 }

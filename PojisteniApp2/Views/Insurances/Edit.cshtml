@@ -1,13 +1,10 @@
 ﻿@model PojisteniApp2.Models.Insurance
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editace pojištění";
 }
 
-<h1>Edit</h1>
-
-<h4>Insurance</h4>
-<hr />
+<h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -44,13 +41,9 @@
                 <span asp-validation-for="PersonId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Uložit" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

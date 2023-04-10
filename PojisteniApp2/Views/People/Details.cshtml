@@ -1,14 +1,10 @@
 ﻿@model PojisteniApp2.Models.Person
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detail pojištěnce";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Person</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImageData)
@@ -61,48 +57,53 @@
     </dl>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Insurances[0].InsuranceType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Insurances[0].InsuranceAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Insurances[0].ValidFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Insurances[0].ValidTo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Insurances)
-        {
+@if (Model.Insurances.Count > 0)
+{
+    <h3>Sjednaná pojištění</h3>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    <a asp-controller="Insurances" asp-action="Details" asp-route-id="@item.InsuranceId">@Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InsuranceAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValidFrom)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ValidTo)
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-controller="Insurances" asp-action="Edit" asp-route-id="@item.InsuranceId">Editovat</a>
-                    <a class="btn btn-danger" asp-controller="Insurances" asp-action="Delete" asp-route-id="@item.InsuranceId">Odstranit</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Insurances[0].InsuranceType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Insurances[0].InsuranceAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Insurances[0].ValidFrom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Insurances[0].ValidTo)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Insurances)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Insurances" asp-action="Details" asp-route-id="@item.InsuranceId">@Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuranceAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidTo)
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" asp-controller="Insurances" asp-action="Edit" asp-route-id="@item.InsuranceId">Editovat</a>
+                        <a class="btn btn-danger" asp-controller="Insurances" asp-action="Delete" asp-route-id="@item.InsuranceId">Odstranit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <p>
     <a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-primary">Přidat pojištění</a>
     <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.PersonId">Editovat pojištěnce</a>

@@ -51,7 +51,20 @@ namespace PojisteniApp2.Controllers
         {
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName");
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", id);
-            ViewData["IsDefinedPerson"] = id != null;
+            ViewData["IsDefinedPerson"] = false;
+            ViewData["CustomTitle"] = "Nové pojištění";
+            if (id != null) // PersonId was routed to this action
+            {
+                // Insurance will be created for person defined by PersonId
+                ViewData["IsDefinedPerson"] = true;
+
+                // Person name for the view title
+                var person = _context.Person.Find(id);
+                if (person != null)
+                {
+                    ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
+                }
+            }
             return View();
         }
 
@@ -66,7 +79,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "People", new { id = insurance.PersonId });
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);

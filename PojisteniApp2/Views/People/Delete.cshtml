@@ -1,15 +1,11 @@
 ﻿@model PojisteniApp2.Models.Person
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Odstranění pojištěnce";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Odstranit pojištěnce a všechna jeho pojištění?</h3>
 <div>
-    <h4>Person</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -57,6 +53,6 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="PersonId" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
+        <input type="submit" value="Odstranit" class="btn btn-danger" />
     </form>
 </div>

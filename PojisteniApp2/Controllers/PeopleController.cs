@@ -79,7 +79,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(person);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = person.PersonId});
             }
             return View(person);
         }

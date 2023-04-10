@@ -1,14 +1,11 @@
 ﻿@model PojisteniApp2.Models.Insurance
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detail pojištění";
 }
 
-<h1>Details</h1>
-
+<h1>@ViewData["Title"]</h1>
 <div>
-    <h4>Insurance</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.InsuranceType)
@@ -48,7 +45,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.InsuranceId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.InsuranceId">Editovat</a>
+    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model?.InsuranceId">Odstranit</a>
+</p>
