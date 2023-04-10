@@ -47,10 +47,11 @@ namespace PojisteniApp2.Controllers
         }
 
         // GET: Insurances/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName");
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress");
+            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", id);
+            ViewData["IsDefinedPerson"] = id != null;
             return View();
         }
 

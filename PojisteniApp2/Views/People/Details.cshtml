@@ -104,7 +104,7 @@
     </tbody>
 </table>
 <p>
-    <a asp-controller="Insurances" asp-action="Create" class="btn btn-primary">Přidat pojištění</a>
+    <a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-primary">Přidat pojištění</a>
     <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.PersonId">Editovat pojištěnce</a>
     <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model?.PersonId">Odstranit pojištěnce</a>
 </p>
