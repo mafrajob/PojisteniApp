@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,11 @@ namespace PojisteniApp2.Controllers
                     .FirstOrDefaultAsync(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
             }
 
+            // Create image URL
+            string imageBase64Data = Convert.ToBase64String(person.ImageData);
+            string imageDataURL = string.Format($"data:image/jpg;base64,{imageBase64Data}");
+            ViewBag.ImageDataUrl = imageDataURL;
+
             return View(person);
         }
 
@@ -68,6 +74,13 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
+            // Convert provided file to byte[]
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Request.Form.Files[0].CopyTo(ms);
+                person.ImageData = ms.ToArray();
+            }
+ 
             if (ModelState.IsValid)
             {
                 _context.Add(person);

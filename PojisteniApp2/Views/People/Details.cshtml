@@ -10,6 +10,12 @@
     <h4>Person</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImageData)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@ViewBag.ImageDataUrl" />
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -63,10 +69,10 @@
     <thead>
         <tr>
             <th>
-                Pojištění
+                @Html.DisplayNameFor(model => model.Insurances[0].InsuranceType)
             </th>
             <th>
-                Částka
+                @Html.DisplayNameFor(model => model.Insurances[0].InsuranceAmount)
             </th>
             <th></th>
         </tr>
