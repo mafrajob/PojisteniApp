@@ -117,7 +117,14 @@ namespace PojisteniApp2.Controllers
             }
 
             // Save provided image to ImageData
-            person.ImageData = FileToByteArray(Request.Form.Files[0]);
+            if (Request.Form.Files.Count == 0)
+            {
+                //person.ImageData = _context.Person.Find(id).ImageData;
+            }
+            else
+            {
+                person.ImageData = FileToByteArray(Request.Form.Files[0]);
+            }
 
             if (ModelState.IsValid)
             {

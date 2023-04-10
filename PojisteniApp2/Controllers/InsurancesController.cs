@@ -86,7 +86,7 @@ namespace PojisteniApp2.Controllers
                 return NotFound();
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City", insurance.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
             return View(insurance);
         }
 
@@ -123,7 +123,7 @@ namespace PojisteniApp2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "City", insurance.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
             return View(insurance);
         }
 
