@@ -53,10 +53,8 @@ namespace PojisteniApp2.Controllers
                     .FirstOrDefaultAsync(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
             }
 
-            // Create image URL
-            string imageBase64Data = Convert.ToBase64String(person.ImageData);
-            string imageDataURL = string.Format($"data:image/jpg;base64,{imageBase64Data}");
-            ViewBag.ImageDataUrl = imageDataURL;
+            // Save image URL to display into ViewBag
+            ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
 
             return View(person);
         }
@@ -74,13 +72,9 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
-            // Convert provided file to byte[]
-            using (MemoryStream ms = new MemoryStream())
-            {
-                Request.Form.Files[0].CopyTo(ms);
-                person.ImageData = ms.ToArray();
-            }
- 
+            // Save provided image to ImageData
+            person.ImageData = FileToByteArray(Request.Form.Files[0]);
+
             if (ModelState.IsValid)
             {
                 _context.Add(person);
@@ -103,6 +97,10 @@ namespace PojisteniApp2.Controllers
             {
                 return NotFound();
             }
+
+            // Save image URL to display into ViewBag
+            ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+
             return View(person);
         }
 
@@ -117,6 +115,9 @@ namespace PojisteniApp2.Controllers
             {
                 return NotFound();
             }
+
+            // Save provided image to ImageData
+            person.ImageData = FileToByteArray(Request.Form.Files[0]);
 
             if (ModelState.IsValid)
             {
@@ -181,6 +182,21 @@ namespace PojisteniApp2.Controllers
         private bool PersonExists(int id)
         {
           return (_context.Person?.Any(e => e.PersonId == id)).GetValueOrDefault();
+        }
+
+        private string CreateImageURL(byte[] imageData)
+        {
+            string imageBase64Data = Convert.ToBase64String(imageData);
+            return string.Format($"data:image/jpg;base64,{imageBase64Data}");
+        }
+
+        private byte[] FileToByteArray(IFormFile file)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }
