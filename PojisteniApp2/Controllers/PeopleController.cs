@@ -74,7 +74,19 @@ namespace PojisteniApp2.Controllers
         public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
             // Save provided image to ImageData
-            person.ImageData = FileToByteArray(Request.Form.Files[0]);
+            if (Request.Form.Files.Count > 0) // Image provided by user
+            {
+                IFormFile file = Request.Form.Files[0];
+                if (IsImage(file)) // Provided file is an image file
+                {
+                    person.ImageData = FileToByteArray(file);
+                }
+                else // is not an image
+                {
+                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek.");
+                    return View(person);
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -120,24 +132,24 @@ namespace PojisteniApp2.Controllers
             // Save provided image to ImageData
             if (Request.Form.Files.Count == 0) // Image not provided by user
             {
-                // Find existing record in DB
-                Person existingPerson = _context.Person.Find(id);
-                if (existingPerson == null) // Person not found
-                {
-                    person.ImageData = Array.Empty<byte>();
-                }
-                else // Person found
-                {
-                    // Detach the existing person from the context to prevent error:
-                    // The instance of entity type 'Person' cannot be tracked because another instance
-                    // with the same key value for { 'PersonId'} is already being tracked.
-                    _context.Entry(existingPerson).State = EntityState.Detached;
-                    person.ImageData = existingPerson.ImageData;
-                }
+                // Find existing image data in DB and set it to person.ImageData
+                SetExistingImageData(person);
             }
             else // Image provided by user
             {
-                person.ImageData = FileToByteArray(Request.Form.Files[0]);
+                IFormFile file = Request.Form.Files[0];
+                if (IsImage(file)) // Provided file is an image file
+                {
+                    person.ImageData = FileToByteArray(file);
+                }
+                else // is not an image
+                {
+                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek.");
+                    SetExistingImageData(person);
+                    // Save image URL to display into ViewBag
+                    ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+                    return View(person);
+                }
             }
 
             if (ModelState.IsValid)
@@ -217,6 +229,29 @@ namespace PojisteniApp2.Controllers
             {
                 file.CopyTo(ms);
                 return ms.ToArray();
+            }
+        }
+
+        private bool IsImage(IFormFile file)
+        {
+            return file.ContentType.StartsWith("image/");
+        }
+
+        private void SetExistingImageData(Person person)
+        {
+            // Find existing record in DB
+            Person? existingPerson = _context.Person.Find(person.PersonId);
+            if (existingPerson == null) // Person not found
+            {
+                person.ImageData = Array.Empty<byte>();
+            }
+            else // Person found
+            {
+                // Detach the existing person from the context to prevent error:
+                // The instance of entity type 'Person' cannot be tracked because another instance
+                // with the same key value for { 'PersonId'} is already being tracked.
+                _context.Entry(existingPerson).State = EntityState.Detached;
+                person.ImageData = existingPerson.ImageData;
             }
         }
     }
