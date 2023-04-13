@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using PojisteniApp2.Data;
 using PojisteniApp2.Models;
 
@@ -117,11 +118,24 @@ namespace PojisteniApp2.Controllers
             }
 
             // Save provided image to ImageData
-            if (Request.Form.Files.Count == 0)
+            if (Request.Form.Files.Count == 0) // Image not provided by user
             {
-                //person.ImageData = _context.Person.Find(id).ImageData;
+                // Find existing record in DB
+                Person existingPerson = _context.Person.Find(id);
+                if (existingPerson == null) // Person not found
+                {
+                    person.ImageData = Array.Empty<byte>();
+                }
+                else // Person found
+                {
+                    // Detach the existing person from the context to prevent error:
+                    // The instance of entity type 'Person' cannot be tracked because another instance
+                    // with the same key value for { 'PersonId'} is already being tracked.
+                    _context.Entry(existingPerson).State = EntityState.Detached;
+                    person.ImageData = existingPerson.ImageData;
+                }
             }
-            else
+            else // Image provided by user
             {
                 person.ImageData = FileToByteArray(Request.Form.Files[0]);
             }
