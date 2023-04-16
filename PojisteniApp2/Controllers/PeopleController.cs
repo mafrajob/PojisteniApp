@@ -15,10 +15,12 @@ namespace PojisteniApp2.Controllers
     public class PeopleController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly int _imageMaxSize;
 
         public PeopleController(ApplicationDbContext context)
         {
             _context = context;
+            _imageMaxSize = 2;
         }
 
         // GET: People
@@ -79,11 +81,19 @@ namespace PojisteniApp2.Controllers
                 IFormFile file = Request.Form.Files[0];
                 if (IsImage(file)) // Provided file is an image file
                 {
-                    person.ImageData = FileToByteArray(file);
+                    if (IsInSizeRange(_imageMaxSize, file)) 
+                    {
+                        person.ImageData = FileToByteArray(file);
+                    }
+                    else // Image is larger than set limit
+                    {
+                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {_imageMaxSize} MB");
+                        return View(person);
+                    }
                 }
                 else // is not an image
                 {
-                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek.");
+                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek");
                     return View(person);
                 }
             }
@@ -143,11 +153,22 @@ namespace PojisteniApp2.Controllers
                 IFormFile file = Request.Form.Files[0];
                 if (IsImage(file)) // Provided file is an image file
                 {
-                    person.ImageData = FileToByteArray(file);
+                    if (IsInSizeRange(_imageMaxSize, file))
+                    {
+                        person.ImageData = FileToByteArray(file);
+                    }
+                    else // Image is larger than set limit
+                    {
+                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {_imageMaxSize} MB");
+                        SetExistingImageData(person);
+                        // Save image URL to display into ViewBag
+                        ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+                        return View(person);
+                    }
                 }
                 else // is not an image
                 {
-                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek.");
+                    ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek");
                     SetExistingImageData(person);
                     // Save image URL to display into ViewBag
                     ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
@@ -245,6 +266,22 @@ namespace PojisteniApp2.Controllers
         private bool IsImage(IFormFile file)
         {
             return file.ContentType.StartsWith("image/");
+        }
+
+        /// <summary>
+        /// Valides file size for set maximum limit
+        /// </summary>
+        /// <param name="maxSize">Maximum file size in MB</param>
+        /// <param name="file">File for validation</param>
+        /// <returns>Validation result</returns>
+        private bool IsInSizeRange(int maxSize, IFormFile file)
+        {
+            bool result = true;
+            if (file.Length > maxSize * 1024 * 1024) // maxSize in bytes
+            {
+                result = false;
+            }
+            return result;
         }
 
         private void SetExistingImageData(Person person)
