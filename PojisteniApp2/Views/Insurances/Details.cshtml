@@ -46,6 +46,6 @@
     </dl>
 </div>
 <p>
+    <a asp-controller="People" asp-action="Details" class="btn btn-primary" asp-route-id="@Model?.PersonId">Detail pojištěnce</a>
     <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.InsuranceId">Editovat</a>
-    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model?.InsuranceId">Odstranit</a>
 </p>
