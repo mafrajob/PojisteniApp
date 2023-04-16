@@ -113,6 +113,9 @@ namespace PojisteniApp2.Controllers
 
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+            
+            // Saves URL user is coming from to be used in POST Edit action
+            TempData["PreviousUrl"] = Request.Headers["Referer"].ToString();
 
             return View(person);
         }
@@ -170,6 +173,13 @@ namespace PojisteniApp2.Controllers
                         throw;
                     }
                 }
+                
+                // Redirect to previous URL if available
+                if (TryGetPreviousUrl(out string previousUrl))
+                {
+                    return Redirect(previousUrl);
+                }
+                // Redirect to defaul action People -> Index if condition above is not true
                 return RedirectToAction(nameof(Index));
             }
             return View(person);
@@ -253,6 +263,22 @@ namespace PojisteniApp2.Controllers
                 _context.Entry(existingPerson).State = EntityState.Detached;
                 person.ImageData = existingPerson.ImageData;
             }
+        }
+
+        private bool TryGetPreviousUrl(out string? previousUrl)
+        {
+            bool result = false;
+            previousUrl = null;
+            // Check if URL user is coming from is available
+            if (TempData.ContainsKey("PreviousUrl"))
+            {
+                if (TempData["PreviousUrl"] != null)
+                {
+                    previousUrl = TempData["PreviousUrl"].ToString();
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }
