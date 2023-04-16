@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PojisteniApp2.Helpers;
+using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PojisteniApp2.Models
 {
@@ -23,10 +25,12 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Platnost od")]
         [Required(ErrorMessage = "Vyplňte platnost od")]
+        [DateRange(nameof(ValidFrom), nameof(ValidTo))]
         public DateTime ValidFrom { get; set; } = DateTime.MinValue;
 
         [Display(Name = "Platnost do")]
         [Required(ErrorMessage = "Vyplňte platnost do")]
+        [DateRange(nameof(ValidFrom), nameof(ValidTo))]
         public DateTime ValidTo { get; set; } = DateTime.MaxValue;
 
         [Display(Name = "ID Pojištěnce")]

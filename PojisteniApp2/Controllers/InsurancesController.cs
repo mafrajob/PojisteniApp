@@ -75,14 +75,7 @@ namespace PojisteniApp2.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
-        {
-            // Check ValidFrom-To dates
-            if (insurance.ValidFrom > insurance.ValidTo)
-            {
-                ModelState.AddModelError("ValidFrom", "Musí být menší nebo rovno Platnost do");
-                ModelState.AddModelError("ValidTo", "Musí být větší nebo rovno Platnost od");
-            }
-            
+        {   
             if (ModelState.IsValid)
             {
                 _context.Add(insurance);
@@ -94,7 +87,7 @@ namespace PojisteniApp2.Controllers
                     return Redirect(previousUrl);
                 }
 
-                // Redirect to defaul action People -> Details if conditions above are not true
+                // Redirect to defaul action People -> Details if condition above is not true
                 return RedirectToAction("Details", "People", new { id = insurance.PersonId });
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
@@ -126,6 +119,7 @@ namespace PojisteniApp2.Controllers
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Edit action
             return View(insurance);
         }
 
@@ -159,6 +153,14 @@ namespace PojisteniApp2.Controllers
                         throw;
                     }
                 }
+
+                // Redirect to previous URL if available
+                if (TryGetPreviousUrl(out string previousUrl))
+                {
+                    return Redirect(previousUrl);
+                }
+
+                // Redirect to defaul action Insurances -> Index if condition above is not true
                 return RedirectToAction(nameof(Index));
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
@@ -183,6 +185,7 @@ namespace PojisteniApp2.Controllers
                 return NotFound();
             }
 
+            TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Delete action
             return View(insurance);
         }
 
@@ -202,6 +205,14 @@ namespace PojisteniApp2.Controllers
             }
             
             await _context.SaveChangesAsync();
+
+            // Redirect to previous URL if available
+            if (TryGetPreviousUrl(out string previousUrl))
+            {
+                return Redirect(previousUrl);
+            }
+
+            // Redirect to defaul action Insurances -> Index if condition above is not true
             return RedirectToAction(nameof(Index));
         }
 
