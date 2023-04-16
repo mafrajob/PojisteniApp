@@ -53,6 +53,7 @@ namespace PojisteniApp2.Controllers
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", id);
             ViewData["IsDefinedPerson"] = false;
             ViewData["CustomTitle"] = "Nové pojištění";
+            TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Create action
             if (id != null) // PersonId was routed to this action
             {
                 // Insurance will be created for person defined by PersonId
@@ -75,14 +76,38 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
         {
+            // Check ValidFrom-To dates
+            if (insurance.ValidFrom > insurance.ValidTo)
+            {
+                ModelState.AddModelError("ValidFrom", "Musí být menší nebo rovno Platnost do");
+                ModelState.AddModelError("ValidTo", "Musí být větší nebo rovno Platnost od");
+            }
+            
             if (ModelState.IsValid)
             {
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
+
+                // Redirect to previous URL if available
+                if (TryGetPreviousUrl(out string previousUrl))
+                {
+                    return Redirect(previousUrl);
+                }
+
+                // Redirect to defaul action People -> Details if conditions above are not true
                 return RedirectToAction("Details", "People", new { id = insurance.PersonId });
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            ViewData["IsDefinedPerson"] = false;
+            ViewData["CustomTitle"] = "Nové pojištění";
+            // Person name for the view title
+            var person = _context.Person.Find(insurance.PersonId);
+            if (person != null)
+            {
+                ViewData["IsDefinedPerson"] = true;
+                ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
+            }
             return View(insurance);
         }
 
@@ -183,6 +208,22 @@ namespace PojisteniApp2.Controllers
         private bool InsuranceExists(int id)
         {
           return (_context.Insurance?.Any(e => e.InsuranceId == id)).GetValueOrDefault();
+        }
+
+        private bool TryGetPreviousUrl(out string? previousUrl)
+        {
+            bool result = false;
+            previousUrl = null;
+            // Check if URL user is coming from is available
+            if (TempData.ContainsKey("PreviousUrl"))
+            {
+                if (TempData["PreviousUrl"] != null)
+                {
+                    previousUrl = TempData["PreviousUrl"].ToString();
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }
