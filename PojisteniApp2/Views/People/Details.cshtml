@@ -64,6 +64,9 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.Insurances[0].InsuranceId)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Insurances[0].InsuranceType)
                 </th>
                 <th>
@@ -83,7 +86,10 @@
             {
                 <tr>
                     <td>
-                        <a asp-controller="Insurances" asp-action="Details" asp-route-id="@item.InsuranceId">@Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)</a>
+                        <a asp-controller="Insurances" asp-action="Details" asp-route-id="@item.InsuranceId">@Html.DisplayFor(modelItem => item.InsuranceId)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.InsuranceAmount)
