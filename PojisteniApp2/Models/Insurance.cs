@@ -16,6 +16,8 @@ namespace PojisteniApp2.Models
         public InsuranceType? InsuranceType { get; set; }
 
         [Display(Name = "Částka")]
+        [Range(1, 1000000000, ErrorMessage = "{0} musí být mezi {1} a {2}")]
+        [DisplayFormat(DataFormatString = "{0:#,##0 Kč}")]
         public int InsuranceAmount { get; set; }
 
         [Display(Name = "Předmět pojištění")]
@@ -26,11 +28,13 @@ namespace PojisteniApp2.Models
         [Display(Name = "Platnost od")]
         [Required(ErrorMessage = "Vyplňte platnost od")]
         [DateRange(nameof(ValidFrom), nameof(ValidTo))]
+        [DataType(DataType.Date)]
         public DateTime ValidFrom { get; set; } = DateTime.MinValue;
 
         [Display(Name = "Platnost do")]
         [Required(ErrorMessage = "Vyplňte platnost do")]
         [DateRange(nameof(ValidFrom), nameof(ValidTo))]
+        [DataType(DataType.Date)]
         public DateTime ValidTo { get; set; } = DateTime.MaxValue;
 
         [Display(Name = "ID Pojištěnce")]

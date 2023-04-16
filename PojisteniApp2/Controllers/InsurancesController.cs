@@ -54,10 +54,15 @@ namespace PojisteniApp2.Controllers
             ViewData["IsDefinedPerson"] = false;
             ViewData["CustomTitle"] = "Nové pojištění";
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Create action
+            // Create insurance instance and assign default values
+            Insurance insurance = new Insurance();
+            insurance.ValidFrom = DateTime.Now.Date;
+            insurance.ValidTo = insurance.ValidFrom.AddYears(1);
             if (id != null) // PersonId was routed to this action
             {
                 // Insurance will be created for person defined by PersonId
                 ViewData["IsDefinedPerson"] = true;
+                insurance.PersonId = (int)id;
 
                 // Person name for the view title
                 var person = _context.Person.Find(id);
@@ -66,7 +71,7 @@ namespace PojisteniApp2.Controllers
                     ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
                 }
             }
-            return View();
+            return View(insurance);
         }
 
         // POST: Insurances/Create
