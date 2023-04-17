@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace PojisteniApp2.Controllers
     public class InsurancesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INotyfService _notyf;
 
-        public InsurancesController(ApplicationDbContext context)
+        public InsurancesController(ApplicationDbContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
 
         // GET: Insurances
@@ -85,6 +88,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Pojištění uloženo");
 
                 // Redirect to previous URL if available
                 if (TryGetPreviousUrl(out string previousUrl))
