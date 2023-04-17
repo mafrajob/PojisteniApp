@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,13 @@ namespace PojisteniApp2.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly int _imageMaxSize;
+        private readonly INotyfService _notyf;
 
-        public PeopleController(ApplicationDbContext context)
+        public PeopleController(ApplicationDbContext context, INotyfService notyf)
         {
             _context = context;
-            _imageMaxSize = 2;
+            _imageMaxSize = 1;
+            _notyf = notyf;
         }
 
         // GET: People
@@ -102,6 +105,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(person);
                 await _context.SaveChangesAsync();
+                _notyf.Success("Nový pojištěnec přidán");
                 return RedirectToAction(nameof(Details), new { id = person.PersonId});
             }
             return View(person);
@@ -182,6 +186,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(person);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Změny pojištěnce uloženy");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -237,6 +242,7 @@ namespace PojisteniApp2.Controllers
             if (person != null)
             {
                 _context.Person.Remove(person);
+                _notyf.Success("Pojištěnec smazán");
             }
             
             await _context.SaveChangesAsync();

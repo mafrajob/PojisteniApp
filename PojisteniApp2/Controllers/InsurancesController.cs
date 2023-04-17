@@ -88,7 +88,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
-                _notyf.Success("Pojištění uloženo");
+                _notyf.Success("Nové pojištění přidáno");
 
                 // Redirect to previous URL if available
                 if (TryGetPreviousUrl(out string previousUrl))
@@ -150,6 +150,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(insurance);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Změny pojištění uloženy");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -211,6 +212,7 @@ namespace PojisteniApp2.Controllers
             if (insurance != null)
             {
                 _context.Insurance.Remove(insurance);
+                _notyf.Success($"Pojištění ID {id} smazáno");
             }
             
             await _context.SaveChangesAsync();
