@@ -52,13 +52,18 @@ namespace PojisteniApp2.Controllers
             // Find insurances of the selected person in the database
             person.Insurances = _context.Insurance.Where(i => i.PersonId == id).ToList();
 
-            foreach (Insurance insurance in person.Insurances)
+            if(person.Insurances.Count > 0)
             {
-                // Find insurance type details for each of the person's insurances
-                insurance.InsuranceType = await _context.InsuranceType
-                    .FirstOrDefaultAsync(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
-            }
+                // Get all existing insurance types
+                InsuranceType[] insuranceTypes = _context.InsuranceType.ToArray();
 
+                foreach (Insurance insurance in person.Insurances)
+                {
+                    // Find insurance type details for each of the person's insurances
+                    insurance.InsuranceType = insuranceTypes.FirstOrDefault(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
+                }
+            }
+            
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
 
