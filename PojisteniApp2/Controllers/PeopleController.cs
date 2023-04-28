@@ -45,6 +45,7 @@ namespace PojisteniApp2.Controllers
             var person = await _context.Person
                 .Include(p => p.Insurances) // Find related insurances
                 .ThenInclude(i => i.InsuranceType) // Find insurance type
+                .AsNoTracking() // Improves performance returned entities won't be updated
                 .FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {

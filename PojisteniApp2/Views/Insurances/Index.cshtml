@@ -16,19 +16,19 @@
                 @Html.DisplayNameFor(model => model.InsuranceId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PersonSortParm"]">@Html.DisplayNameFor(model => model.Person)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.InsuranceType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InsuranceAmount)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]">@Html.DisplayNameFor(model => model.InsuranceAmount)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValidFrom)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]">@Html.DisplayNameFor(model => model.ValidFrom)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValidTo)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidToSortParm"]">@Html.DisplayNameFor(model => model.ValidTo)</a>
             </th>
             <th></th>
         </tr>

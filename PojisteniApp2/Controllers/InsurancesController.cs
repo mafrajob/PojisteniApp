@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
@@ -23,10 +24,64 @@ namespace PojisteniApp2.Controllers
         }
 
         // GET: Insurances
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var applicationDbContext = _context.Insurance.Include(i => i.InsuranceType).Include(i => i.Person);
-            return View(await applicationDbContext.ToListAsync());
+            // Variable must match @Html.DisplayNameFor(model => model.Person) in the Index view
+            string personCustomSortKeyword = "Person";
+
+            // Sort based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/advanced?view=aspnetcore-7.0#dynamic-linq
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["PersonSortParm"] = string.IsNullOrEmpty(sortOrder) ? $"{personCustomSortKeyword}_desc" : "";
+            ViewData["AmountSortParm"] = sortOrder == "InsuranceAmount" ? "InsuranceAmount_desc" : "InsuranceAmount";
+            ViewData["ValidFromSortParm"] = sortOrder == "ValidFrom" ? "ValidFrom_desc" : "ValidFrom";
+            ViewData["ValidToSortParm"] = sortOrder == "ValidTo" ? "ValidTo_desc" : "ValidTo";
+
+            var insurances = (IQueryable<Insurance>)_context.Insurance.Include(i => i.InsuranceType).Include(i => i.Person);
+
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = personCustomSortKeyword;
+            }
+
+            bool descending = false;
+            if (sortOrder.EndsWith("_desc"))
+            {
+                sortOrder = sortOrder.Substring(0, sortOrder.Length - 5);
+                descending = true;
+            }
+
+            if (descending)
+            {
+                // Custom sort by Person properties
+                if (sortOrder.StartsWith(personCustomSortKeyword))
+                {
+                    insurances = insurances.OrderByDescending(e => e.Person.LastName)
+                                            .ThenByDescending(e => e.Person.FirstName)
+                                            .ThenByDescending(e => e.Person.City)
+                                            .ThenByDescending(e => e.Person.Street);
+                }
+                // Generic sort by all other Insurance properties
+                else
+                {
+                    insurances = insurances.OrderByDescending(e => EF.Property<object>(e, sortOrder));
+                }
+            }
+            else
+            {
+                if (sortOrder.StartsWith(personCustomSortKeyword))
+                {
+                    insurances = insurances.OrderBy(e => e.Person.LastName)
+                                            .ThenBy(e => e.Person.FirstName)
+                                            .ThenBy(e => e.Person.City)
+                                            .ThenBy(e => e.Person.Street);
+                }
+                else
+                {
+                    insurances = insurances.OrderBy(e => EF.Property<object>(e, sortOrder));
+                }
+            }
+
+            return View(await insurances.AsNoTracking().ToListAsync());
         }
 
         // GET: Insurances/Details/5
