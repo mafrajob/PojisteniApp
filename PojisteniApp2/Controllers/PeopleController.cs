@@ -43,25 +43,12 @@ namespace PojisteniApp2.Controllers
             }
 
             var person = await _context.Person
+                .Include(p => p.Insurances) // Find related insurances
+                .ThenInclude(i => i.InsuranceType) // Find insurance type
                 .FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {
                 return NotFound();
-            }
-
-            // Find insurances of the selected person in the database
-            person.Insurances = _context.Insurance.Where(i => i.PersonId == id).ToList();
-
-            if(person.Insurances.Count > 0)
-            {
-                // Get all existing insurance types
-                InsuranceType[] insuranceTypes = _context.InsuranceType.ToArray();
-
-                foreach (Insurance insurance in person.Insurances)
-                {
-                    // Find insurance type details for each of the person's insurances
-                    insurance.InsuranceType = insuranceTypes.FirstOrDefault(insuranceType => insuranceType.InsuranceTypeId == insurance.InsuranceTypeId);
-                }
             }
             
             // Save image URL to display into ViewBag
