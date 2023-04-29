@@ -24,7 +24,7 @@ namespace PojisteniApp2.Controllers
         }
 
         // GET: Insurances
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             // Variable must match @Html.DisplayNameFor(model => model.Person) in the Index view
             string personCustomSortKeyword = "Person";
@@ -35,8 +35,15 @@ namespace PojisteniApp2.Controllers
             ViewData["AmountSortParm"] = sortOrder == "InsuranceAmount" ? "InsuranceAmount_desc" : "InsuranceAmount";
             ViewData["ValidFromSortParm"] = sortOrder == "ValidFrom" ? "ValidFrom_desc" : "ValidFrom";
             ViewData["ValidToSortParm"] = sortOrder == "ValidTo" ? "ValidTo_desc" : "ValidTo";
+            // Search based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-7.0#add-filtering-functionality-to-the-index-method
+            ViewData["CurrentFilter"] = searchString;
 
             var insurances = (IQueryable<Insurance>)_context.Insurance.Include(i => i.InsuranceType).Include(i => i.Person);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                insurances = insurances.Where(e => e.Person.LastName.Contains(searchString) || e.Person.FirstName.Contains(searchString));
+            }
 
             if (string.IsNullOrEmpty(sortOrder))
             {
