@@ -27,7 +27,7 @@ namespace PojisteniApp2.Controllers
         // GET: Insurances
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            // Variable must match @Html.DisplayNameFor(model => model.Person) in the Index view
+            // Can be assigned whatever string you want, but the keyword needs to be consistent throughout this method
             string personCustomSortKeyword = "Person";
 
             // Sort based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/advanced?view=aspnetcore-7.0#dynamic-linq
@@ -63,6 +63,7 @@ namespace PojisteniApp2.Controllers
             bool descending = false;
             if (sortOrder.EndsWith("_desc"))
             {
+                // Trim _desc suffix
                 sortOrder = sortOrder.Substring(0, sortOrder.Length - 5);
                 descending = true;
             }
@@ -70,7 +71,7 @@ namespace PojisteniApp2.Controllers
             if (descending)
             {
                 // Custom sort by Person properties
-                if (sortOrder.StartsWith(personCustomSortKeyword))
+                if (sortOrder == personCustomSortKeyword)
                 {
                     insurances = insurances.OrderByDescending(e => e.Person.LastName)
                                             .ThenByDescending(e => e.Person.FirstName)
@@ -85,7 +86,7 @@ namespace PojisteniApp2.Controllers
             }
             else
             {
-                if (sortOrder.StartsWith(personCustomSortKeyword))
+                if (sortOrder == personCustomSortKeyword)
                 {
                     insurances = insurances.OrderBy(e => e.Person.LastName)
                                             .ThenBy(e => e.Person.FirstName)
