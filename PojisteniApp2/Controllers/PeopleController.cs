@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using PojisteniApp2.Data;
+using PojisteniApp2.Helpers;
 using PojisteniApp2.Models;
 
 namespace PojisteniApp2.Controllers
@@ -27,11 +28,45 @@ namespace PojisteniApp2.Controllers
         }
 
         // GET: People
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-              return _context.Person != null ? 
-                          View(await _context.Person.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Person'  is null.");
+            // Sort based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-7.0#add-sorting-functionality-to-the-index-method
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "descending" : "";
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var people = (IQueryable<Person>)_context.Person;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                people = people.Where(e => e.LastName.Contains(searchString) || e.FirstName.Contains(searchString));
+            }
+
+            if (sortOrder == "descending")
+            {
+                people = people.OrderByDescending(e => e.LastName)
+                                .ThenByDescending(e => e.FirstName)
+                                .ThenByDescending(e => e.City)
+                                .ThenByDescending(e => e.Street);
+            }
+            else
+            {
+                people = people.OrderBy(e => e.LastName)
+                                .ThenBy(e => e.FirstName)
+                                .ThenBy(e => e.City)
+                                .ThenBy(e => e.Street);
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Person>.CreateAsync(people.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: People/Details/5

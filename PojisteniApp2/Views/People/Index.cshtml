@@ -1,4 +1,6 @@
-﻿@model IEnumerable<PojisteniApp2.Models.Person>
+﻿@using PojisteniApp2.Helpers;
+
+@model PaginatedList<PojisteniApp2.Models.Person>
 
 @{
     ViewData["Title"] = "Pojištěnci";
@@ -9,14 +11,25 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Nový pojištěnec</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions">
+        <p>
+            Hledání dle jména nebo příjmení: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Aplikovat filtr" class="btn btn-warning" />
+            <a asp-action="Index" class="btn btn-danger">Smazat filtr</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Celé jméno</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                Bydliště
             </th>
             <th></th>
         </tr>
@@ -38,3 +51,23 @@
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-primary @prevDisabled">
+    Předchozí
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-primary @nextDisabled">
+    Další
+</a>
