@@ -1,4 +1,6 @@
-﻿@model IEnumerable<PojisteniApp2.Models.Insurance>
+﻿@using PojisteniApp2.Helpers;
+
+@model PaginatedList<PojisteniApp2.Models.Insurance>
 
 @{
     ViewData["Title"] = "Pojištění";
@@ -24,22 +26,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InsuranceId)
+                ID Pojištění
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PersonSortParm"]">@Html.DisplayNameFor(model => model.Person)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PersonSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Pojištěnec</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InsuranceType)
+                Typ pojištění
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]">@Html.DisplayNameFor(model => model.InsuranceAmount)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Částka</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]">@Html.DisplayNameFor(model => model.ValidFrom)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Platnost od</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidToSortParm"]">@Html.DisplayNameFor(model => model.ValidTo)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidToSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Platnost do</a>
             </th>
             <th></th>
         </tr>
@@ -73,3 +75,23 @@
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-primary @prevDisabled">
+    Předchozí
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-primary @nextDisabled">
+    Další
+</a>

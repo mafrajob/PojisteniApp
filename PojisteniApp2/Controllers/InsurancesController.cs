@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PojisteniApp2.Data;
+using PojisteniApp2.Helpers;
 using PojisteniApp2.Models;
 
 namespace PojisteniApp2.Controllers
@@ -24,7 +25,7 @@ namespace PojisteniApp2.Controllers
         }
 
         // GET: Insurances
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             // Variable must match @Html.DisplayNameFor(model => model.Person) in the Index view
             string personCustomSortKeyword = "Person";
@@ -35,6 +36,15 @@ namespace PojisteniApp2.Controllers
             ViewData["AmountSortParm"] = sortOrder == "InsuranceAmount" ? "InsuranceAmount_desc" : "InsuranceAmount";
             ViewData["ValidFromSortParm"] = sortOrder == "ValidFrom" ? "ValidFrom_desc" : "ValidFrom";
             ViewData["ValidToSortParm"] = sortOrder == "ValidTo" ? "ValidTo_desc" : "ValidTo";
+            // Paging based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-7.0#add-paging-to-students-index
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
             // Search based on tutorial: https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-7.0#add-filtering-functionality-to-the-index-method
             ViewData["CurrentFilter"] = searchString;
 
@@ -88,7 +98,8 @@ namespace PojisteniApp2.Controllers
                 }
             }
 
-            return View(await insurances.AsNoTracking().ToListAsync());
+            int pageSize = 3;
+            return View(await PaginatedList<Insurance>.CreateAsync(insurances.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Insurances/Details/5
