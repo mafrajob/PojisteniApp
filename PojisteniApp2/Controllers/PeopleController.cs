@@ -86,10 +86,10 @@ namespace PojisteniApp2.Controllers
             {
                 return NotFound();
             }
-            
+
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
-
+    
             return View(person);
         }
 
@@ -284,8 +284,15 @@ namespace PojisteniApp2.Controllers
 
         private string CreateImageURL(byte[] imageData)
         {
-            string imageBase64Data = Convert.ToBase64String(imageData);
-            return string.Format($"data:image/jpg;base64,{imageBase64Data}");
+            if (imageData.Length > 0) // Check if profile image exists in DB
+            {
+                string imageBase64Data = Convert.ToBase64String(imageData);
+                return string.Format($"data:image/jpg;base64,{imageBase64Data}");
+            }
+            else // Return default image if not
+            {
+                return Person.DefaultImagePath;
+            }
         }
 
         private byte[] FileToByteArray(IFormFile file)

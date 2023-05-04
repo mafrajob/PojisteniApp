@@ -56,5 +56,7 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Profilový obrázek")]
         public byte[] ImageData { get; set; } = Array.Empty<byte>();
+
+        public static string DefaultImagePath { get; } = "/images/img-person-default.png";
     }
 }
