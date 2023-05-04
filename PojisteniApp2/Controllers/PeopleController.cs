@@ -17,13 +17,11 @@ namespace PojisteniApp2.Controllers
     public class PeopleController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly int _imageMaxSize;
         private readonly INotyfService _notyf;
 
         public PeopleController(ApplicationDbContext context, INotyfService notyf)
         {
             _context = context;
-            _imageMaxSize = 1;
             _notyf = notyf;
         }
 
@@ -96,6 +94,12 @@ namespace PojisteniApp2.Controllers
         // GET: People/Create
         public IActionResult Create()
         {
+            // Default image to display in view
+            ViewBag.ImageDataUrl = Person.DefaultImagePath;
+            
+            // Profile image max size for client validation
+            ViewBag.ImageMaxSize = Person.ImageMaxSize;
+            
             return View();
         }
 
@@ -106,19 +110,25 @@ namespace PojisteniApp2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
+            // Default image to display in view
+            ViewBag.ImageDataUrl = Person.DefaultImagePath;
+            
+            // Profile image max size for client validation
+            ViewBag.ImageMaxSize = Person.ImageMaxSize;
+
             // Save provided image to ImageData
             if (Request.Form.Files.Count > 0) // Image provided by user
             {
                 IFormFile file = Request.Form.Files[0];
                 if (IsImage(file)) // Provided file is an image file
                 {
-                    if (IsInSizeRange(_imageMaxSize, file)) 
+                    if (IsInSizeRange(Person.ImageMaxSize, file)) 
                     {
                         person.ImageData = FileToByteArray(file);
                     }
                     else // Image is larger than set limit
                     {
-                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {_imageMaxSize} MB");
+                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {Person.ImageMaxSize} MB");
                         return View(person);
                     }
                 }
@@ -156,6 +166,9 @@ namespace PojisteniApp2.Controllers
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
             
+            // Profile image max size for client validation
+            ViewBag.ImageMaxSize = Person.ImageMaxSize;
+            
             // Saves URL user is coming from to be used in POST Edit action
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString();
 
@@ -174,6 +187,9 @@ namespace PojisteniApp2.Controllers
                 return NotFound();
             }
 
+            // Profile image max size for client validation
+            ViewBag.ImageMaxSize = Person.ImageMaxSize;
+
             // Save provided image to ImageData
             if (Request.Form.Files.Count == 0) // Image not provided by user
             {
@@ -185,13 +201,13 @@ namespace PojisteniApp2.Controllers
                 IFormFile file = Request.Form.Files[0];
                 if (IsImage(file)) // Provided file is an image file
                 {
-                    if (IsInSizeRange(_imageMaxSize, file))
+                    if (IsInSizeRange(Person.ImageMaxSize, file))
                     {
                         person.ImageData = FileToByteArray(file);
                     }
                     else // Image is larger than set limit
                     {
-                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {_imageMaxSize} MB");
+                        ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {Person.ImageMaxSize} MB");
                         SetExistingImageData(person);
                         // Save image URL to display into ViewBag
                         ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
@@ -315,7 +331,7 @@ namespace PojisteniApp2.Controllers
         /// <param name="maxSize">Maximum file size in MB</param>
         /// <param name="file">File for validation</param>
         /// <returns>Validation result</returns>
-        private bool IsInSizeRange(int maxSize, IFormFile file)
+        private bool IsInSizeRange(float maxSize, IFormFile file)
         {
             bool result = true;
             if (file.Length > maxSize * 1024 * 1024) // maxSize in bytes

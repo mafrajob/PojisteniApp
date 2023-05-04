@@ -58,5 +58,7 @@ namespace PojisteniApp2.Models
         public byte[] ImageData { get; set; } = Array.Empty<byte>();
 
         public static string DefaultImagePath { get; } = "/images/img-person-default.png";
+
+        public static float ImageMaxSize { get; } = 1.0f;
     }
 }

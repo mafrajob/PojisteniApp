@@ -14,7 +14,8 @@
                 <label asp-for="ImageData" class="control-label"></label>
                 <img src="@ViewBag.ImageDataUrl" id="profile-img" class="form-control" />
                 <input type="file" accept="image/*" id="choose-img" asp-for="ImageData" class="form-control" />
-                <span asp-validation-for="ImageData" id="validation-img" class="text-danger"></span>
+                <input type="hidden" id="max-size-img" value="@ViewBag.ImageMaxSize" />
+                <span asp-validation-for="ImageData" id="validation-text-img" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
