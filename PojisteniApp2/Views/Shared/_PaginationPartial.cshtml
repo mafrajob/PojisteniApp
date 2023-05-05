@@ -5,19 +5,21 @@
 
 <div class="row text-center">
     <div class="col">
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-outline-primary @prevDisabled">
-            Předchozí
-        </a>
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex + 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-outline-primary @nextDisabled">
-            Další
-        </a>
+        <div class="btn-group">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-outline-primary @prevDisabled">
+                Předchozí
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-outline-primary @nextDisabled">
+                Další
+            </a>
+        </div>
     </div>
 </div>
