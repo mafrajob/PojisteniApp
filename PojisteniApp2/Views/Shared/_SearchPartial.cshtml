@@ -1,9 +1,9 @@
 ﻿<form asp-action="Index" method="get">
     <div class="form-actions">
-        <p>
-            Hledání dle jména nebo příjmení: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Aplikovat filtr" class="btn btn-warning" />
-            <a asp-action="Index" class="btn btn-danger">Smazat filtr</a>
-        </p>
+        <div>
+            <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="Jméno nebo příjmení" class="mb-1" />
+            <input type="submit" value="Aplikovat filtr" class="btn btn-warning mb-1" />
+            <a asp-action="Index" class="btn btn-danger mb-1">Smazat filtr</a>
+        </div>
     </div>
 </form>
