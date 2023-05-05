@@ -17,6 +17,7 @@ namespace PojisteniApp2.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly INotyfService _notyf;
+        private readonly string _genericErrorMessage = "Opravte zadaná data";
 
         public InsurancesController(ApplicationDbContext context, INotyfService notyf)
         {
@@ -184,6 +185,7 @@ namespace PojisteniApp2.Controllers
                 ViewData["IsDefinedPerson"] = true;
                 ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
             }
+            _notyf.Error(_genericErrorMessage);
             return View(insurance);
         }
 
@@ -224,7 +226,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(insurance);
                     await _context.SaveChangesAsync();
-                    _notyf.Success("Změny pojištění uloženy");
+                    _notyf.Success($"Změny pojištění ID {id} uloženy");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -249,6 +251,7 @@ namespace PojisteniApp2.Controllers
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            _notyf.Error(_genericErrorMessage);
             return View(insurance);
         }
 

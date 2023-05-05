@@ -18,6 +18,7 @@ namespace PojisteniApp2.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly INotyfService _notyf;
+        private readonly string _genericErrorMessage = "Opravte zadaná data";
 
         public PeopleController(ApplicationDbContext context, INotyfService notyf)
         {
@@ -129,12 +130,14 @@ namespace PojisteniApp2.Controllers
                     else // Image is larger than set limit
                     {
                         ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {Person.ImageMaxSize} MB");
+                        _notyf.Error(_genericErrorMessage);
                         return View(person);
                     }
                 }
                 else // is not an image
                 {
                     ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek");
+                    _notyf.Error(_genericErrorMessage);
                     return View(person);
                 }
             }
@@ -143,9 +146,10 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(person);
                 await _context.SaveChangesAsync();
-                _notyf.Success("Nový pojištěnec přidán");
+                _notyf.Success($"Nový pojištěnec {person.FullName} přidán");
                 return RedirectToAction(nameof(Details), new { id = person.PersonId});
             }
+            _notyf.Error(_genericErrorMessage);
             return View(person);
         }
 
@@ -208,18 +212,16 @@ namespace PojisteniApp2.Controllers
                     else // Image is larger than set limit
                     {
                         ModelState.AddModelError("ImageData", $"Maximální velikost obrázku je {Person.ImageMaxSize} MB");
-                        SetExistingImageData(person);
-                        // Save image URL to display into ViewBag
-                        ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+                        RetrieveExistingImageData(person);
+                        _notyf.Error(_genericErrorMessage);
                         return View(person);
                     }
                 }
                 else // is not an image
                 {
                     ModelState.AddModelError("ImageData", "Vybraný soubor musí být obrázek");
-                    SetExistingImageData(person);
-                    // Save image URL to display into ViewBag
-                    ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+                    RetrieveExistingImageData(person);
+                    _notyf.Error(_genericErrorMessage);
                     return View(person);
                 }
             }
@@ -230,7 +232,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(person);
                     await _context.SaveChangesAsync();
-                    _notyf.Success("Změny pojištěnce uloženy");
+                    _notyf.Success($"Změny pojištěnce {person.FullName} uloženy");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -252,6 +254,8 @@ namespace PojisteniApp2.Controllers
                 // Redirect to defaul action People -> Index if condition above is not true
                 return RedirectToAction(nameof(Index));
             }
+            RetrieveExistingImageData(person);
+            _notyf.Error(_genericErrorMessage);
             return View(person);
         }
 
@@ -286,7 +290,7 @@ namespace PojisteniApp2.Controllers
             if (person != null)
             {
                 _context.Person.Remove(person);
-                _notyf.Success("Pojištěnec smazán");
+                _notyf.Success($"Pojištěnec {person.FullName} smazán");
             }
             
             await _context.SaveChangesAsync();
@@ -357,6 +361,13 @@ namespace PojisteniApp2.Controllers
                 _context.Entry(existingPerson).State = EntityState.Detached;
                 person.ImageData = existingPerson.ImageData;
             }
+        }
+
+        private void RetrieveExistingImageData(Person person)
+        {
+            SetExistingImageData(person);
+            // Save image URL to display into ViewBag
+            ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
         }
 
         private bool TryGetPreviousUrl(out string? previousUrl)
