@@ -6,61 +6,35 @@
 
 <div>
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageData)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@ViewBag.ImageDataUrl" />
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostalCode)
-        </dd>
+        <div class="col col-sm-3 col-lg-2">
+            <dd>
+                <img src="@ViewBag.ImageDataUrl" class="img-thumbnail" />
+            </dd>
+        </div>
+        <div class="col">
+            <dd>
+                <h3>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)  @Html.DisplayFor(model => model.City)
+            </dd>
+            <dd class="mt-3">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </div>
     </dl>
 </div>
 
 @if (Model.Insurances.Count > 0)
 {
-    <h3>Sjednaná pojištění</h3>
-    <table class="table">
+    <h3 class="mt-3 mt-sm-4">Sjednaná pojištění</h3>
+    <table class="table tm-2 mt-sm-3">
         <thead>
             <tr>
                 <th>
@@ -100,9 +74,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ValidTo)
                     </td>
-                    <td>
-                        <a class="btn btn-warning" asp-controller="Insurances" asp-action="Edit" asp-route-id="@item.InsuranceId">Editovat</a>
-                        <a class="btn btn-danger" asp-controller="Insurances" asp-action="Delete" asp-route-id="@item.InsuranceId">Odstranit</a>
+                    <td class="text-end">
+                        <a class="btn btn-warning mb-1" asp-controller="Insurances" asp-action="Edit" asp-route-id="@item.InsuranceId">Editovat</a>
+                        <a class="btn btn-danger mb-1" asp-controller="Insurances" asp-action="Delete" asp-route-id="@item.InsuranceId">Odstranit</a>
                     </td>
                 </tr>
             }
@@ -110,8 +84,12 @@
     </table>
 }
 
-<p>
-    <a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-primary">Přidat pojištění</a>
-    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.PersonId">Editovat pojištěnce</a>
-    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model?.PersonId">Odstranit pojištěnce</a>
-</p>
+<div class="row">
+    <div class="col">
+        <a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-primary">Přidat pojištění</a>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@Model?.PersonId">Editovat pojištěnce</a>
+        <a asp-action="Delete" class="btn btn-danger mb-1 ms-1" asp-route-id="@Model?.PersonId">Odstranit pojištěnce</a>
+    </div>
+</div>
