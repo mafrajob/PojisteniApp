@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<table class="table">
+<table class="table table-hover mt-2">
     <thead>
         <tr>
             <th>
@@ -44,32 +44,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.InsuranceId">@Html.DisplayFor(modelItem => item.InsuranceId)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.FullNameWithAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuranceAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValidFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValidTo)
-            </td>
-            <td class="text-end">
-                <a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@item.InsuranceId">Editovat</a>
-                <a asp-action="Delete" class="btn btn-danger mb-1" asp-route-id="@item.InsuranceId">Odstranit</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr onclick="window.location.href = '@Url.Action("Details", "Insurances", new { id = item.InsuranceId })'">
+				<td>
+					@Html.DisplayFor(modelItem => item.InsuranceId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Person.FullNameWithAddress)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.InsuranceAmount)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ValidFrom)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ValidTo)
+				</td>
+				<td class="text-end">
+					<a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@item.InsuranceId">Editovat</a>
+					<a asp-action="Delete" class="btn btn-danger mb-1" asp-route-id="@item.InsuranceId">Odstranit</a>
+				</td>
+			</tr>
+        }
     </tbody>
 </table>
 
