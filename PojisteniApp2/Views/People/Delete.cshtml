@@ -1,58 +1,99 @@
-﻿@model PojisteniApp2.Models.Person
+﻿@using System.Web;
+
+@model PojisteniApp2.Models.Person
 
 @{
     ViewData["Title"] = "Odstranění pojištěnce";
 }
 
 <h3>Odstranit pojištěnce a všechna jeho pojištění?</h3>
-<div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostalCode)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="PersonId" />
-        <input type="submit" value="Odstranit" class="btn btn-danger" />
-    </form>
+<div id="local-style" class="mt-4">
+    <div class="row">
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-12 col-md">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+            </dl>
+        </div>
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-12 col-md">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-12 col-md">
+                    @* To display email as plain text without hyperlink *@
+                    @Html.Raw(HttpUtility.HtmlEncode(Model.Email))
+                </dd>
+            </dl>
+        </div>
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+                <dd class="col-12 col-md">
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.Street)
+                </dt>
+                <dd class="col-12 col-md">
+                    @Html.DisplayFor(model => model.Street)
+                </dd>
+            </dl>
+        </div>
+        <div class="col col-lg-4">
+            <dl class="row">
+                <dt class="col-12 col-md-auto">
+                    @Html.DisplayNameFor(model => model.PostalCode) a @Html.DisplayNameFor(model => model.City)
+                </dt>
+                <dd class="col-12 col-md">
+                    @Html.DisplayFor(model => model.PostalCode)<text>&nbsp&nbsp</text>@Html.DisplayFor(model => model.City)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="PersonId" />
+                <input type="submit" value="Odstranit" class="btn btn-danger" />
+            </form>
+        </div>
+    </div>
 </div>
+
+@* Make <dt> element font normal and <dd> element font bold *@
+<script>
+    const elementDiv = document.getElementById("local-style");
+    const elementsDt = elementDiv.getElementsByTagName("dt");
+    const elementsDd = elementDiv.getElementsByTagName("dd");
+    for (const element of elementsDt) {
+        element.classList.add("fw-normal");
+    }
+    for (const element of elementsDd) {
+        element.classList.add("fw-bold");
+    }
+</script>
