@@ -25,3 +25,11 @@ body {
     max-width: 200px;
     max-height: 200px;
 }
+
+div.dl-local-style dt {
+    font-weight: normal;
+}
+
+div.dl-local-style dd {
+    font-weight: bold;
+}

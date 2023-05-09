@@ -5,7 +5,7 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<div id="local-style" class="mt-4">
+<div class="dl-local-style mt-4">
     <div class="row">
         <div class="col col-lg-5 col-xl-4">
             <dl class="row">
@@ -69,16 +69,3 @@
         </div>
     </div>
 </div>
-
-@* Make <dt> element font normal and <dd> element font bold *@
-<script>
-    const elementDiv = document.getElementById("local-style");
-    const elementsDt = elementDiv.getElementsByTagName("dt");
-    const elementsDd = elementDiv.getElementsByTagName("dd");
-    for (const element of elementsDt) {
-        element.classList.add("fw-normal");
-    }
-    for (const element of elementsDd) {
-        element.classList.add("fw-bold");
-    }
-</script>
