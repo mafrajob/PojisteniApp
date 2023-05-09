@@ -8,7 +8,9 @@
     <dl class="row">
         <div class="col-auto">
             <dd>
-                <img src="@ViewBag.ImageDataUrl" class="img-thumbnail img-profile" />
+                <a asp-action="Edit" asp-route-id="@Model?.PersonId">
+                    <img src="@ViewBag.ImageDataUrl" class="img-thumbnail img-profile" />
+                </a>
             </dd>
         </div>
         <div class="col">
