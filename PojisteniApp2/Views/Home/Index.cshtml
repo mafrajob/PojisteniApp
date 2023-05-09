@@ -13,8 +13,15 @@
             <div class="container">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
                     <h1>Naši pojištěnci</h1>
-                    <p class="lead">Dobrá práce, evidujeme již 15 pojištěnců. S takovou budeme brzy největší pojišťovna v Evropě!</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Přidat pojištěnce</a></p>
+                    @if (@ViewBag.PersonCount > 0)
+                    {
+                        <p class="lead">Dobrá práce, evidujeme již @ViewBag.PersonCount pojištěnců. S takovou budeme brzy největší pojišťovna v Evropě!</p>
+                    }
+                    else
+                    {
+                        <p class="lead">Neevidujeme žádného pojištěnce:-(</p>
+                    }
+                    <p><a asp-controller="People" asp-action="Create" class="btn btn-lg btn-primary">Přidat pojištěnce</a></p>
                 </div>
             </div>
         </div>
@@ -23,8 +30,15 @@
             <div class="container">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
                     <h1>Prodaná pojištění</h1>
-                    <p class="lead">Uzavřeli jsme již 42 pojištění. Nejvyšší limit plnění je 15 000 Kč, dokážeš ho překonat?</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Uzavřít pojištění</a></p>
+                    @if (@ViewBag.InsuranceCount > 0)
+                    {
+                        <p class="lead">Uzavřeli jsme již @ViewBag.InsuranceCount pojištění. Nejvyšší limit plnění je @ViewBag.MaxInsuranceLimit Kč, dokážeš ho překonat?</p>
+                    }
+                    else
+                    {
+                        <p class="lead">Neprodali jsme žádné pojištění:-(</p>
+                    }
+                    <p><a asp-controller="Insurances" asp-action="Create" class="btn btn-lg btn-primary">Uzavřít pojištění</a></p>
                 </div>
             </div>
         </div>
