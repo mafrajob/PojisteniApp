@@ -6,11 +6,15 @@
 
 <form asp-action="Edit" enctype="multipart/form-data">
 	<div class="row">
-		<div class="col-12 col-md-auto">
-			<h1 class="text-center text-md-start">@ViewData["Title"]</h1>
+		<div class="col text-center text-md-start">
+			<h1>@ViewData["Title"]</h1>
 			<input type="hidden" asp-for="PersonId" />
-			<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
-			<div class="form-group d-flex justify-content-center justify-content-md-start mt-3">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-md-auto">
+			<div class="form-group d-flex justify-content-center justify-content-md-start mt-1 mt-md-4">
 				<img src="@ViewBag.ImageDataUrl" id="profile-img" class="img-thumbnail img-profile" />
 			</div>
 			<div class="form-group mt-1">
@@ -20,7 +24,7 @@
 			</div>
 		</div>
 		<div class="col-12 col-md">
-			<div class="form-group mt-1 mt-md-5">
+			<div class="form-group mt-1">
 				<label asp-for="FirstName" class="control-label"></label>
 				<input asp-for="FirstName" class="form-control" />
 				<span asp-validation-for="FirstName" class="text-danger"></span>
@@ -42,7 +46,7 @@
 			</div>
 		</div>
 		<div class="col-12 col-md">
-			<div class="form-group mt-1 mt-md-5">
+			<div class="form-group mt-1">
 				<label asp-for="Street" class="control-label"></label>
 				<input asp-for="Street" class="form-control" />
 				<span asp-validation-for="Street" class="text-danger"></span>
@@ -57,10 +61,14 @@
 				<input asp-for="City" class="form-control" />
 				<span asp-validation-for="City" class="text-danger"></span>
 			</div>
-			<div class="form-group text-center text-md-end mt-4">
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col">
+			<div class="form-group text-center text-md-start mt-3">
 				<input type="submit" value="Uložit" class="btn btn-primary" />
 			</div>
-		</div>	
+		</div>
 	</div>
 </form>
 
