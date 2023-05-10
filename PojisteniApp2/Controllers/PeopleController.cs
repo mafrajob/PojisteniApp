@@ -150,7 +150,7 @@ namespace PojisteniApp2.Controllers
             {
                 _context.Add(person);
                 await _context.SaveChangesAsync();
-                _notyf.Success($"Nový pojištěnec {person.FirstName} {person.LastName} přidán");
+                _notyf.Success($"Přidán pojištěnec<br>{person.FirstName} {person.LastName}");
                 return RedirectToAction(nameof(Details), new { id = person.PersonId});
             }
             _notyf.Error(_genericErrorMessage);
@@ -236,7 +236,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(person);
                     await _context.SaveChangesAsync();
-                    _notyf.Success($"Změny pojištěnce {person.FirstName} {person.LastName} uloženy");
+                    _notyf.Success($"Změněn pojištěnec<br>{person.FirstName} {person.LastName}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -294,7 +294,7 @@ namespace PojisteniApp2.Controllers
             if (person != null)
             {
                 _context.Person.Remove(person);
-                _notyf.Success($"Pojištěnec {person.FirstName} {person.LastName} smazán");
+                _notyf.Success($"Smazán pojištěnec<br>{person.FirstName} {person.LastName}");
             }
             
             await _context.SaveChangesAsync();

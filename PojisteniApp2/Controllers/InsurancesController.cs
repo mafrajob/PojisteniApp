@@ -226,7 +226,7 @@ namespace PojisteniApp2.Controllers
                 {
                     _context.Update(insurance);
                     await _context.SaveChangesAsync();
-                    _notyf.Success($"Změny pojištění ID {id} uloženy");
+                    _notyf.Success($"Změněno pojištění ID {id}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -289,7 +289,7 @@ namespace PojisteniApp2.Controllers
             if (insurance != null)
             {
                 _context.Insurance.Remove(insurance);
-                _notyf.Success($"Pojištění ID {id} smazáno");
+                _notyf.Success($"Smazáno pojištění ID {id}");
             }
             
             await _context.SaveChangesAsync();
