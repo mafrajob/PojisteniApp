@@ -11,14 +11,14 @@
                asp-route-pageNumber="@(Model.PageIndex - 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
                class="btn btn-outline-secondary @prevDisabled">
-                Předchozí
+               <i class="fa-solid fa-chevron-left"></i>
             </a>
             <a asp-action="Index"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNumber="@(Model.PageIndex + 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
                class="btn btn-outline-secondary @nextDisabled">
-                Další
+               <i class="fa-solid fa-chevron-right"></i>
             </a>
         </div>
     </div>

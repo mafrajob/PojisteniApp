@@ -10,7 +10,7 @@
 		<h1>@ViewData["Title"]</h1>
 	</div>
 	<div class="col text-end d-flex align-items-center justify-content-end">
-		<a asp-action="Create" class="btn btn-primary">N</a>
+        <a asp-action="Create" class="btn btn-lg btn-primary"><i class="fa-solid fa-person-circle-plus"></i></a>
 	</div>
 </div>
 <div class="bg-light py-2 py-md-4 px-3 px-md-5 mt-3">
@@ -42,8 +42,8 @@
                         @Html.DisplayFor(modelItem => item.Address)
                     </td>
                     <td class="text-end">
-                        <a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@item.PersonId">E</a>
-                        <a asp-action="Delete" class="btn btn-danger mb-1" asp-route-id="@item.PersonId">X</a>
+                        <a asp-action="Edit" class="btn btn-outline-secondary mb-1" asp-route-id="@item.PersonId"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-action="Delete" class="btn btn-outline-secondary mb-1" asp-route-id="@item.PersonId"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
             }
