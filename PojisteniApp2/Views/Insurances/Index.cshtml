@@ -13,65 +13,65 @@
         <a asp-action="Create" class="btn btn-lg btn-primary"><i class="fa-solid fa-file-circle-plus"></i></a>
     </div>
 </div>
-<div class="bg-light py-2 py-md-4 px-3 px-md-5 mt-3">
-    <div class="row">
-        <div class="col">
-            <partial name="_SearchPartial" />
-        </div>
-    </div>
-    <table class="table table-hover mt-3">
-        <thead>
-            <tr>
-                <th>
-                    ID Pojištění
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["PersonSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Pojištěnec</a>
-                </th>
-                <th>
-                    Typ pojištění
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Částka</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Platnost od</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidToSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Platnost do</a>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr onclick="window.location.href = '@Url.Action("Details", "Insurances", new { id = item.InsuranceId })'">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InsuranceId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Person.FullNameWithAddress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InsuranceAmount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ValidFrom)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ValidTo)
-                    </td>
-                    <td class="text-end">
-                        <a asp-action="Edit" class="btn btn-outline-secondary mb-1" asp-route-id="@item.InsuranceId"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a asp-action="Delete" class="btn btn-outline-secondary mb-1" asp-route-id="@item.InsuranceId"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
+<div class="row bg-light py-2 py-md-4 px-3 px-md-5 mt-1">
+	<div class="col-12">
+		<partial name="_SearchPartial" />
+	</div>
+    <div class="col-12">
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>
+                        ID Pojištění
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PersonSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Pojištěnec</a>
+                    </th>
+                    <th>
+                        Typ pojištění
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Částka</a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Platnost od</a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidToSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Platnost do</a>
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <partial name="_PaginationPartial" />
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr onclick="window.location.href = '@Url.Action("Details", "Insurances", new { id = item.InsuranceId })'">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsuranceId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.FullNameWithAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsuranceAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidFrom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValidTo)
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Edit" class="btn btn-outline-secondary mb-1" asp-route-id="@item.InsuranceId"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a asp-action="Delete" class="btn btn-outline-secondary mb-1" asp-route-id="@item.InsuranceId"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <partial name="_PaginationPartial" />
+    </div>
 </div>
