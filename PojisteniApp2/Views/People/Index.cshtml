@@ -5,48 +5,49 @@
 @{
     ViewData["Title"] = "Pojištěnci";
 }
-<div class="row">
-    <div class="col">
-        <h1>@ViewData["Title"]</h1>
-    </div>
+<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+	<div class="col-auto text-white">
+		<h1>@ViewData["Title"]</h1>
+	</div>
+	<div class="col text-end d-flex align-items-center justify-content-end">
+		<a asp-action="Create" class="btn btn-primary">N</a>
+	</div>
 </div>
-<div class="row mt-2">
-    <div class="col col-sm-3">
-        <a asp-action="Create" class="btn btn-primary">Nový pojištěnec</a>
+<div class="bg-light py-2 py-md-4 px-3 px-md-5 mt-3">
+    <div class="row">
+        <div class="col">
+            <partial name="_SearchPartial" />
+        </div>
     </div>
-    <div class="col col-sm-9 d-flex justify-content-end">
-        <partial name="_SearchPartial" />
-    </div>
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Celé jméno</a>
+                </th>
+                <th>
+                    Bydliště
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr onclick="window.location.href = '@Url.Action("Details", "People", new { id = item.PersonId })'">
+                    <td>
+                        <span class="text-capitalize">@Html.DisplayFor(modelItem => item.FullName)</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@item.PersonId">E</a>
+                        <a asp-action="Delete" class="btn btn-danger mb-1" asp-route-id="@item.PersonId">X</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PaginationPartial" />
 </div>
-
-<table class="table table-hover mt-2">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Celé jméno</a>
-            </th>
-            <th>
-                Bydliště
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-			<tr onclick="window.location.href = '@Url.Action("Details", "People", new { id = item.PersonId })'">
-				<td>
-                    <span class="text-capitalize">@Html.DisplayFor(modelItem => item.FullName)</span>
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Address)
-				</td>
-				<td class="text-end">
-					<a asp-action="Edit" class="btn btn-warning mb-1" asp-route-id="@item.PersonId">Editovat</a>
-					<a asp-action="Delete" class="btn btn-danger mb-1" asp-route-id="@item.PersonId">Odstranit</a>
-				</td>
-			</tr>
-        }
-    </tbody>
-</table>
-
-<partial name="_PaginationPartial" />
