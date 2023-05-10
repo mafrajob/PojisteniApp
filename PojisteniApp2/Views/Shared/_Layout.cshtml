@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,10 +20,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="People" asp-action="Index">Pojištěnci</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="People" asp-action="Index"><i class="fa-solid fa-user"></i> Pojištěnci</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Index">Pojištění</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Index"><i class="fa-solid fa-file-contract"></i> Pojištění</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -45,7 +45,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://kit.fontawesome.com/909536fde6.js" crossorigin="anonymous"></script>
+    @* Fontawesome online source if needed *@
+    @*<script src="https://kit.fontawesome.com/909536fde6.js" crossorigin="anonymous"></script>*@
+    <script src="~/lib/fontawesome-free-6.4.0-web/js/all.js"></script>
     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 </body>

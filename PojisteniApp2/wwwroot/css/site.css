@@ -21,9 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
+/* My custom styles added below */
 .img-profile {
     max-width: 150px;
-    max-height: 150px;
+    max-height: 267px;
 }
 
 div.dl-local-style dt {
