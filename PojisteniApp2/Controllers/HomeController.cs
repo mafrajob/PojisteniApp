@@ -18,19 +18,16 @@ namespace PojisteniApp2.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.PersonCount = _context.Person.Count();
-            int insuranceCount = _context.Insurance.Count();
-            ViewBag.InsuranceCount = insuranceCount;
-            int maxInsuranceLimit = 0;
-            if (insuranceCount > 0)
+            Statistics statistics = new();
+            statistics.PersonCount = _context.Person.Count();
+            statistics.InsuranceCount = _context.Insurance.Count();
+            if (statistics.InsuranceCount > 0) // Following LINQ query throws exception when no insurances in the DB
             {
-                // This LINQ query throws exception when no insurances in the DB
-                maxInsuranceLimit = _context.Insurance.Max(i => i.InsuranceAmount);
+                // https://stackoverflow.com/questions/3456926/how-to-insert-a-thousand-separator-comma-with-convert-to-double
+                statistics.MaxInsuranceLimit = _context.Insurance.Max(i => i.InsuranceAmount).ToString("# ### ### ###");
             }
-            // https://stackoverflow.com/questions/3456926/how-to-insert-a-thousand-separator-comma-with-convert-to-double
-            ViewBag.MaxInsuranceLimit = maxInsuranceLimit.ToString("N");
 
-            return View();
+            return View(statistics);
         }
 
         public IActionResult Privacy()

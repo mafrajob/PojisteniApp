@@ -1,4 +1,6 @@
-﻿@{
+﻿@model PojisteniApp2.Models.Statistics
+
+@{
     ViewData["Title"] = "Domovská stránka";
 }
 
@@ -13,9 +15,9 @@
             <div class="container">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
                     <h1>Naši pojištěnci</h1>
-                    @if (@ViewBag.PersonCount > 0)
+                    @if (@Model.PersonCount > 0)
                     {
-                        <p class="lead">Dobrá práce, evidujeme již @ViewBag.PersonCount pojištěnců. S takovou budeme brzy největší pojišťovna v Evropě!</p>
+                        <p class="lead">Dobrá práce, evidujeme již @Model.PersonCount pojištěnců. S takovou budeme brzy největší pojišťovna v Evropě!</p>
                     }
                     else
                     {
@@ -30,9 +32,9 @@
             <div class="container">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
                     <h1>Prodaná pojištění</h1>
-                    @if (@ViewBag.InsuranceCount > 0)
+                    @if (@Model.InsuranceCount > 0)
                     {
-                        <p class="lead">Uzavřeli jsme již @ViewBag.InsuranceCount pojištění. Nejvyšší limit plnění je @ViewBag.MaxInsuranceLimit Kč, dokážeš ho překonat?</p>
+                        <p class="lead">Uzavřeli jsme již @Model.InsuranceCount pojištění. Nejvyšší limit plnění je @Model.MaxInsuranceLimit Kč, dokážeš ho překonat?</p>
                     }
                     else
                     {

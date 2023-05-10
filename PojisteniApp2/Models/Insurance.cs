@@ -17,7 +17,7 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Částka")]
         [Range(1, 1000000000, ErrorMessage = "{0} musí být mezi {1} a {2}")]
-        [DisplayFormat(DataFormatString = "{0:#,##0 Kč}")]
+        [DisplayFormat(DataFormatString = "{0:# ### ### ### Kč}")]
         public int InsuranceAmount { get; set; }
 
         [Display(Name = "Předmět pojištění")]
