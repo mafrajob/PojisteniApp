@@ -3,26 +3,36 @@
 @{
     ViewData["Title"] = "Nový pojištěnec";
 }
-
 <form asp-action="Create" enctype="multipart/form-data">
-	<div class="row">
-		<div class="col text-center text-md-start">
+	<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+		<div class="col-auto text-white d-flex align-items-center">
 			<h1>@ViewData["Title"]</h1>
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		</div>
+		<div class="col text-end d-flex align-items-center justify-content-end">
+			<button type="submit" class="btn btn-lg btn-primary"><i class="fa-solid fa-check"></i></button>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-12 col-md-auto">
-			<div class="form-group d-flex justify-content-center justify-content-md-start mt-1 mt-md-4">
-				<img src="@ViewBag.ImageDataUrl" id="profile-img" class="img-thumbnail img-profile" />
+		<div class="col">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		</div>
+	</div>
+	<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5 mt-1">
+		<div class="col-12 col-lg-auto me-lg-4">
+			<div class="form-group d-flex justify-content-center mt-lg-4">
+				<img src="@ViewBag.ImageDataUrl" id="profile-img" class="img-fluid img-profile" />
 			</div>
 			<div class="form-group mt-1">
-				<input type="file" accept="image/*" id="choose-img" asp-for="ImageData" class="form-control-file" />
+				<div class="d-flex justify-content-center">
+					<input type="file" accept="image/*" id="choose-img" asp-for="ImageData" class="form-control" />
+				</div>
 				<input type="hidden" id="max-size-img" value="@ViewBag.ImageMaxSize" />
-				<span asp-validation-for="ImageData" id="validation-text-img" class="text-danger"></span>
+				<div class="text-center">
+					<span asp-validation-for="ImageData" id="validation-text-img" class="text-danger"></span>
+				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md">
+		<div class="col-12 col-sm">
 			<div class="form-group mt-1">
 				<label asp-for="FirstName" class="control-label"></label>
 				<input asp-for="FirstName" class="form-control" />
@@ -44,7 +54,7 @@
 				<span asp-validation-for="Phone" class="text-danger"></span>
 			</div>
 		</div>
-		<div class="col-12 col-md">
+		<div class="col-12 col-sm">
 			<div class="form-group mt-1">
 				<label asp-for="Street" class="control-label"></label>
 				<input asp-for="Street" class="form-control" />
@@ -59,13 +69,6 @@
 				<label asp-for="City" class="control-label"></label>
 				<input asp-for="City" class="form-control" />
 				<span asp-validation-for="City" class="text-danger"></span>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<div class="form-group text-center text-md-start mt-3">
-				<input type="submit" value="Uložit" class="btn btn-primary" />
 			</div>
 		</div>
 	</div>

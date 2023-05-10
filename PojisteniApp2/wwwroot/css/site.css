@@ -33,3 +33,7 @@ div.dl-local-style dt {
 div.dl-local-style dd {
     font-weight: bold;
 }
+
+#choose-img {
+    width: 150px;
+}
