@@ -4,70 +4,69 @@
     ViewData["Title"] = "Odstranění pojištění";
 }
 
-<h3>Odstranit vybrané pojištění?</h3>
-<div class="dl-local-style mt-4">
-    <div class="row">
-        <div class="col col-lg-5 col-xxl-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.InsuranceType)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.InsuranceType.InsuranceTypeName)
-                </dd>
-            </dl>
-        </div>
-        <div class="col col-lg-5 col-xxl-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.InsuranceAmount)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.InsuranceAmount)
-                </dd>
-            </dl>
-        </div>
+<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+    <div class="col-auto text-white d-flex align-items-center">
+        <h1>Smazat pojištnění?</h1>
     </div>
-    <div class="row">
-        <div class="col col-lg-5 col-xxl-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.InsuranceSubject)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.InsuranceSubject)
-                </dd>
-            </dl>
-        </div>
-        <div class="col col-lg-5 col-xxl-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    Platnost
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.ValidFrom)<span class="fw-normal"> - </span>@Html.DisplayFor(model => model.ValidTo)
-                </dd>
-            </dl>
-        </div>
+    <div class="col text-end d-flex align-items-center justify-content-end"> 
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="InsuranceId" />
+            <button type="submit" class="btn btn-lg btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+        </form>
     </div>
-    <div class="row">
-        <div class="col col-lg-5 col-xxl-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.Person)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.Person.FullNameWithAddress)
-                </dd>
-            </dl>
+</div>
+<div class="row dl-local-style bg-light py-2 py-md-4 px-3 px-md-5 mt-1 text-center text-sm-start">
+    <dl class="col-12 col-sm-6 col-lg-5 col-xl-4 d-flex flex-column justify-content-evenly m-0">
+        @* <div> to keep elements always together *@
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.InsuranceType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.InsuranceType.InsuranceTypeName)
+            </dd>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="InsuranceId" />
-                <input type="submit" value="Odstranit" class="btn btn-danger" />
-            </form>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.InsuranceAmount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.InsuranceAmount)
+            </dd>
         </div>
-    </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.InsuranceSubject)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.InsuranceSubject)
+            </dd>
+        </div>
+    </dl>
+    <dl class="col-12 col-sm-6 col-lg-5 col-xl-4 d-flex flex-column justify-content-evenly m-0">
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.ValidFrom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ValidFrom)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.ValidTo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ValidTo)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Person)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Person.FullNameWithAddress)
+            </dd>
+        </div>
+    </dl>
 </div>
