@@ -146,7 +146,7 @@ namespace PojisteniApp2.Controllers
                 var person = _context.Person.Find(id);
                 if (person != null)
                 {
-                    ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FirstName} {person.LastName}");
+                    ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" {person.FirstName.Substring(0, 1).ToUpper()}. {person.LastName}");
                 }
             }
             return View(insurance);

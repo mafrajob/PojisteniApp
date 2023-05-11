@@ -4,14 +4,21 @@
     ViewData["Title"] = "Nové pojištění";
 }
 
-<form asp-action="Create">
-    <div class="row">
-        <div class="col text-center text-md-start">
+<form asp-action="Create" enctype="multipart/form-data">
+	<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+		<div class="col-auto text-white d-flex align-items-center">
             <h1>@ViewData["CustomTitle"]</h1>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        </div>
-    </div>
-    <div class="row">
+		</div>
+		<div class="col text-end d-flex align-items-center justify-content-end">
+			<button type="submit" class="btn btn-lg btn-primary"><i class="fa-solid fa-check"></i></button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		</div>
+	</div>
+	<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5 mt-1">
         <div class="col-12 col-md-6 col-lg-5 col-xl-4">
             <div class="form-group mt-1">
                 <label asp-for="InsuranceType" class="control-label"></label>
@@ -39,22 +46,14 @@
                 <input asp-for="ValidTo" class="form-control" />
                 <span asp-validation-for="ValidTo" class="text-danger"></span>
             </div>
-            <div 
-                @if (ViewBag.IsDefinedPerson)
-                {
-                    <text>style = "display: none"</text>
-                }
+            <div @if (ViewBag.IsDefinedPerson)
+            {
+                <text>style = "display: none"</text>
+            }
             class="form-group mt-1">
                 <label asp-for="Person" class="control-label"></label>
-                <select asp-for="PersonId" class ="form-control" asp-items="ViewBag.PersonId"></select>
+                <select asp-for="PersonId" class="form-control" asp-items="ViewBag.PersonId"></select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group text-center text-md-start mt-3">
-                <input type="submit" value="Uložit" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
+	</div>
 </form>
