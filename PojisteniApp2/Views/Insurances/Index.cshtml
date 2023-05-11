@@ -30,10 +30,10 @@
                     <th>
                         Typ pojištění
                     </th>
-                    <th>
+                    <th class="d-none d-md-table-cell">
                         <a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Částka</a>
                     </th>
-                    <th>
+                    <th class="d-none d-md-table-cell">
                         <a asp-action="Index" asp-route-sortOrder="@ViewData["ValidFromSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-black">Platnost od</a>
                     </th>
                     <th>
@@ -55,10 +55,10 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.InsuranceType.InsuranceTypeName)
                         </td>
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             @Html.DisplayFor(modelItem => item.InsuranceAmount)
                         </td>
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             @Html.DisplayFor(modelItem => item.ValidFrom)
                         </td>
                         <td>
