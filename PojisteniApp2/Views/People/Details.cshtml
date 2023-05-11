@@ -58,12 +58,12 @@
 	</dl>
 </div>
 <div class="row bg-light py-3 ps-2 ps-md-3 pe-2 d-flex mt-1">
-    <div class="col-auto d-flex align-items-center">
-        <h3>Uzavřená pojištění</h3>
-    </div>
-    <div class="col text-end d-flex align-items-center justify-content-end">
+	<div class="col-auto d-flex align-items-center bg-dark bg-opacity-10 rounded-start py-2 ps-3 ms-1">
+		<h3>Uzavřená pojištění</h3>
+	</div>
+	<div class="col text-end d-flex align-items-center justify-content-end bg-dark bg-opacity-10 rounded-end py-2 me-2">
 		<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary"><i class="fa-solid fa-plus"></i></a>
-    </div>
+	</div>
 </div>
 @if(Model?.Insurances.Count > 0)
 {

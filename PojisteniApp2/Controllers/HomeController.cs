@@ -30,11 +30,6 @@ namespace PojisteniApp2.Controllers
             return View(statistics);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

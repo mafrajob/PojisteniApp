@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    padding-top: 4.5rem; /* Padding added because of the navbar class .fixed-top */
+    margin-bottom: 60px;
 }
 
 /* My custom styles added below */
