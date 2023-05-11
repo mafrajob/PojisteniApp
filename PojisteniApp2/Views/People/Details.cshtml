@@ -8,7 +8,7 @@
 	<div class="col-auto text-white d-flex align-items-center">
         <h1 class="text-capitalize">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
     </div>
-    <div class="col text-end d-flex align-items-center justify-content-end">
+    <div class="col d-flex align-items-center justify-content-end">
         <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-pen-to-square"></i></a>
         <a asp-action="Delete" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-trash-can"></i></a>
     </div>
@@ -57,17 +57,18 @@
 		</div>
 	</dl>
 </div>
-<div class="row bg-light py-3 ps-2 ps-md-3 pe-2 d-flex mt-1">
-	<div class="col-auto d-flex align-items-center bg-dark bg-opacity-10 rounded-start py-2 ps-3 ms-1">
-		<h3>Uzavřená pojištění</h3>
+<div class="row bg-light pt-3 mt-1"></div>
+<div class="row d-flex bg-dark bg-opacity-10 p-2">
+	<div class="col-auto d-flex align-items-center">
+		<h4>Uzavřená pojištění</h4>
 	</div>
-	<div class="col text-end d-flex align-items-center justify-content-end bg-dark bg-opacity-10 rounded-end py-2 me-2">
+	<div class="col d-flex align-items-center justify-content-end">
 		<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary"><i class="fa-solid fa-plus"></i></a>
 	</div>
 </div>
 @if(Model?.Insurances.Count > 0)
 {
-	<div class="row bg-light px-2 pb-2">
+	<div class="row bg-light p-2">
 		<div class="col">
 			<table class="table table-hover">
 				<thead>

@@ -8,7 +8,7 @@
     <div class="col-auto text-white d-flex align-items-center">
         <h1>@ViewData["Title"]</h1>
     </div>
-    <div class="col text-end d-flex align-items-center justify-content-end">
+    <div class="col d-flex align-items-center justify-content-end">
         <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.InsuranceId"><i class="fa-solid fa-pen-to-square"></i></a>
         <a asp-controller="People" asp-action="Details" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-user"></i></a>
     </div>
