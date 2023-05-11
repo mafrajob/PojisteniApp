@@ -6,81 +6,73 @@
     ViewData["Title"] = "Odstranění pojištěnce";
 }
 
-<h3>Odstranit pojištěnce a všechna jeho pojištění?</h3>
-<div class="dl-local-style mt-4">
-    <div class="row">
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
-            </dl>
-        </div>
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.LastName)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.LastName)
-                </dd>
-            </dl>
-        </div>
+<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+    <div class="col-auto text-white d-flex align-items-center">
+        <h1>Smazat pojištěnce?</h1>
     </div>
-    <div class="row">
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.Email)
-                </dt>
-                <dd class="col-12 col-md">
-                    @* To display email as plain text without hyperlink *@
-                    @Html.Raw(HttpUtility.HtmlEncode(Model.Email))
-                </dd>
-            </dl>
-        </div>
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.Phone)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.Phone)
-                </dd>
-            </dl>
-        </div>
+    <div class="col text-end d-flex align-items-center justify-content-end">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="PersonId" />
+            <button type="submit" class="btn btn-lg btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+        </form>
     </div>
-    <div class="row">
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.Street)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.Street)
-                </dd>
-            </dl>
-        </div>
-        <div class="col col-lg-4">
-            <dl class="row">
-                <dt class="col-12 col-md-auto">
-                    @Html.DisplayNameFor(model => model.PostalCode) a @Html.DisplayNameFor(model => model.City)
-                </dt>
-                <dd class="col-12 col-md">
-                    @Html.DisplayFor(model => model.PostalCode)<text>&nbsp&nbsp</text>@Html.DisplayFor(model => model.City)
-                </dd>
-            </dl>
-        </div>
+</div>
+<div class="row dl-local-style bg-light py-2 py-md-4 px-3 px-md-5 mt-1 text-center text-sm-start">
+    <div class="col-12 col-sm-auto me-2 me-md-4 mb-3 mb-sm-0">
+        <img src="@ViewBag.ImageDataUrl" class="img-fluid img-profile" />
     </div>
-    <div class="row">
-        <div class="col">
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="PersonId" />
-                <input type="submit" value="Odstranit" class="btn btn-danger" />
-            </form>
+    <dl class="col-12 col-sm-auto d-flex flex-column justify-content-evenly m-0">
+        @* <div> to keep elements always together *@
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName) a @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+            </dd>
         </div>
-    </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @* To display email as plain text without hyperlink *@
+                @Html.Raw(HttpUtility.HtmlEncode(Model?.Email))
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </div>
+    </dl>
+    <dl class="col-12 col-sm-auto d-flex flex-column justify-content-evenly m-0">
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Street)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)
+            </dd>
+        </div>
+    </dl>
 </div>

@@ -278,6 +278,9 @@ namespace PojisteniApp2.Controllers
                 return NotFound();
             }
 
+            // Save image URL to display into ViewBag
+            ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
+
             return View(person);
         }
 

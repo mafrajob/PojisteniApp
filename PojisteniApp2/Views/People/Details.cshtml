@@ -19,33 +19,42 @@
 			<img src="@ViewBag.ImageDataUrl" class="img-fluid img-profile" />
 		</a>
 	</div>
-	<dl class="col-12 col-sm-auto">
-		<dt>
-			@Html.DisplayNameFor(model => model.Email)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Email)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.Phone)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Phone)
-		</dd>
+	<dl class="col-12 col-sm-auto d-flex flex-column justify-content-evenly m-0">
+		@* <div> to keep elements always together *@
+		<div>
+			<dt>
+				@Html.DisplayNameFor(model => model.Email)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Email)
+			</dd>
+		</div>
+		<div>
+			<dt>
+				@Html.DisplayNameFor(model => model.Phone)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Phone)
+			</dd>
+		</div>
 	</dl>
-	<dl class="col-12 col-sm-auto">
-		<dt>
-			@Html.DisplayNameFor(model => model.Street)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.Street)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.PostalCode) a @Html.DisplayNameFor(model => model.City)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.PostalCode)<text>&nbsp&nbsp</text>@Html.DisplayFor(model => model.City)
-		</dd>
+	<dl class="col-12 col-sm-auto d-flex flex-column justify-content-evenly m-0">
+		<div>
+			<dt>
+				@Html.DisplayNameFor(model => model.Street)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Street)
+			</dd>
+		</div>
+		<div>
+			<dt>
+				@Html.DisplayNameFor(model => model.PostalCode) a @Html.DisplayNameFor(model => model.City)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.PostalCode)<text>&nbsp&nbsp</text>@Html.DisplayFor(model => model.City)
+			</dd>
+		</div>
 	</dl>
 </div>
 <div class="row bg-light py-3 ps-2 ps-md-3 pe-2 d-flex mt-1">
