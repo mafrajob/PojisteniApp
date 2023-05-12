@@ -7,39 +7,40 @@
 }
 
 <section>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <form class="d-flex flex-column gap-2" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
+	<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+		<div class="row bg-dark bg-opacity-50 py-3 ps-4 pe-2 d-flex">
+			<div class="col-auto text-white d-flex align-items-center">
+				<h1>Přihlášení uživatele</h1>
+			</div>
+			<div class="col d-flex align-items-center justify-content-end">
+				<button type="submit" class="btn btn-lg btn-primary"><i class="fa-solid fa-check"></i></button>
+			</div>
+		</div>
+		<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5 mt-1">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="col-12 col-md-6 col-lg-5 col-xl-4">
+				<div class="form-group mt-1">
+					<label asp-for="Email"></label>
+					<input asp-for="Email" class="form-control" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="form-group mt-1">
+					<label asp-for="Password"></label>
+					<input asp-for="Password" class="form-control" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+				<div class="form-group mt-1">
                     <div class="checkbox">
+                        @*Label tag is required so the user can click both checkbox and label next to it*@
                         <label asp-for="RememberMe">
                             <input asp-for="RememberMe" />
                             @Html.DisplayNameFor(model => model.RememberMe)
                         </label>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-secondary">Přihlásit se</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Registrace</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</form>
 </section>
 
 @section Scripts {
