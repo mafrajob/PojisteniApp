@@ -12,13 +12,9 @@
 			<button type="submit" class="btn btn-lg btn-primary"><i class="fa-solid fa-check"></i></button>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col">
-			<input type="hidden" asp-for="PersonId" />
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-		</div>
-	</div>
 	<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5 mt-1">
+		<input type="hidden" asp-for="PersonId" />
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<div class="col-12 col-lg-auto me-lg-4">
 			<div class="form-group d-flex justify-content-center mt-lg-4">
 				<img src="@ViewBag.ImageDataUrl" id="profile-img" class="img-fluid img-profile" />
