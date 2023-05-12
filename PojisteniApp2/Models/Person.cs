@@ -56,5 +56,8 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Profilový obrázek")]
         public byte[] ImageData { get; set; } = Array.Empty<byte>();
+
+		[StringLength(450)]
+		public string? AuthorId { get; set; }
     }
 }

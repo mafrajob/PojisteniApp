@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,14 +23,16 @@ namespace PojisteniApp2.Controllers
         private readonly float _imageMaxSize;
         private readonly string _defaultImagePath;
         private readonly string _genericErrorMessage = "Opravte zadaná data";
+		private readonly UserManager<IdentityUser> _userManager;
 
-        public PeopleController(ApplicationDbContext context, INotyfService notyf, IConfiguration configuration)
+		public PeopleController(ApplicationDbContext context, INotyfService notyf, IConfiguration configuration, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _notyf = notyf;
             _imageMaxSize = configuration.GetValue<float>("Person:ImageMaxSize");
             _defaultImagePath = configuration?.GetValue<string>("Person:DefaultImagePath") ?? "/images/img-person-default.png";
-        }
+			_userManager = userManager;
+		}
 
         // GET: People
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -148,7 +152,9 @@ namespace PojisteniApp2.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(person);
+                // Set currently logged in user's id as AuthorId
+                person.AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				_context.Add(person);
                 await _context.SaveChangesAsync();
                 _notyf.Success($"Přidán pojištěnec<br>{person.FirstName} {person.LastName}");
                 return RedirectToAction(nameof(Details), new { id = person.PersonId});
@@ -180,6 +186,9 @@ namespace PojisteniApp2.Controllers
             // Saves URL user is coming from to be used in POST Edit action
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString();
 
+			// Assign string "disabled" if current user is neither author nor admin
+			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+
             return View(person);
         }
 
@@ -198,8 +207,11 @@ namespace PojisteniApp2.Controllers
             // Profile image max size for client validation
             ViewBag.ImageMaxSize = _imageMaxSize;
 
-            // Save provided image to ImageData
-            if (Request.Form.Files.Count == 0) // Image not provided by user
+            // No disabled functionality for POST method of Edit action
+            ViewBag.Disabled = string.Empty;
+
+			// Save provided image to ImageData
+			if (Request.Form.Files.Count == 0) // Image not provided by user
             {
                 // Find existing image data in DB and set it to person.ImageData
                 SetExistingImageData(person);
@@ -392,5 +404,31 @@ namespace PojisteniApp2.Controllers
             }
             return result;
         }
+
+        private async Task<bool> IsAuthorOrAdminAsync(Person? person = null)
+        {
+			// Get currently logged in user
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                // Get user's roles
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("admin"))
+                {
+                    return true; // User is admin
+                }
+
+                if (person != null) // Person details provided
+                {
+                    // Get user's ID
+					var userId = await _userManager.GetUserIdAsync(user);
+					if (person.AuthorId == userId) 
+					{
+						return true; // User is author
+					}
+				}
+			}
+            return false; // user is neither author nor admin
+		}
     }
 }
