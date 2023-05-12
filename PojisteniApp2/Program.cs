@@ -17,8 +17,12 @@ namespace PojisteniApp2
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            // Changed based on tutorial https://www.itnetwork.cz/csharp/asp-net-core/zaklady/registrace-v-aspnet-core-mvc
+            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             // Toast notifications - explained at https://codewithmukesh.com/blog/toast-notifications-in-aspnet-core/
@@ -48,7 +52,20 @@ namespace PojisteniApp2
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+
+            // Commented out based on tutorial https://www.itnetwork.cz/csharp/asp-net-core/zaklady/registrace-v-aspnet-core-mvc
+            //app.MapRazorPages();
+
+            // Based on tutorial https://www.itnetwork.cz/csharp/asp-net-core/zaklady/uzivatelske-role-v-aspnet-core-mvc-a-dokonceni-blogu
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //    UserManager<IdentityUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            //    roleManager.CreateAsync(new IdentityRole("admin")).Wait();
+            //    IdentityUser user = userManager.FindByEmailAsync("admin@inshuro.com").Result;
+            //    userManager.AddToRoleAsync(user, "admin").Wait();
+            //}
 
             app.Run();
         }
