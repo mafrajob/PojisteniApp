@@ -13,7 +13,7 @@
     <div class="col d-flex align-items-center justify-content-end">
         <form asp-action="Delete">
             <input type="hidden" asp-for="PersonId" />
-            <button type="submit" class="btn btn-lg btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+            <button type="submit" class="btn btn-lg btn-danger @ViewBag.Disabled"><i class="fa-solid fa-trash-can"></i></button>
         </form>
     </div>
 </div>

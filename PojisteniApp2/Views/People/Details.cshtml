@@ -63,7 +63,7 @@
 		<h4>Uzavřená pojištění</h4>
 	</div>
 	<div class="col d-flex align-items-center justify-content-end">
-		<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary"><i class="fa-solid fa-plus"></i></a>
+		<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary @ViewBag.Disabled"><i class="fa-solid fa-plus"></i></a>
 	</div>
 </div>
 @if(Model?.Insurances.Count > 0)

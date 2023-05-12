@@ -96,8 +96,11 @@ namespace PojisteniApp2.Controllers
 
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
-    
-            return View(person);
+
+			// Assign string "disabled" if current user is neither author nor admin
+			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+
+			return View(person);
         }
 
         // GET: People/Create
@@ -108,8 +111,11 @@ namespace PojisteniApp2.Controllers
             
             // Profile image max size for client validation
             ViewBag.ImageMaxSize = _imageMaxSize;
-            
-            return View();
+
+			// Assign string "disabled" if no user logged in
+			ViewBag.Disabled = (User.FindFirstValue(ClaimTypes.NameIdentifier) != null) ? string.Empty : "disabled";
+
+			return View();
         }
 
         // POST: People/Create
@@ -125,8 +131,11 @@ namespace PojisteniApp2.Controllers
             // Profile image max size for client validation
             ViewBag.ImageMaxSize = _imageMaxSize;
 
-            // Save provided image to ImageData
-            if (Request.Form.Files.Count > 0) // Image provided by user
+			// No disabled functionality for POST method of Create action needed
+			ViewBag.Disabled = string.Empty;
+
+			// Save provided image to ImageData
+			if (Request.Form.Files.Count > 0) // Image provided by user
             {
                 IFormFile file = Request.Form.Files[0];
                 if (IsImage(file)) // Provided file is an image file
@@ -207,7 +216,7 @@ namespace PojisteniApp2.Controllers
             // Profile image max size for client validation
             ViewBag.ImageMaxSize = _imageMaxSize;
 
-            // No disabled functionality for POST method of Edit action
+            // No disabled functionality for POST method of Edit action needed
             ViewBag.Disabled = string.Empty;
 
 			// Save provided image to ImageData
@@ -246,6 +255,8 @@ namespace PojisteniApp2.Controllers
             {
                 try
                 {
+                    // Set AuthorId from existing record, otherwise it will be set to NULL by following update
+                    SetExistingAuthorId(person);
                     _context.Update(person);
                     await _context.SaveChangesAsync();
                     _notyf.Success($"Změněn pojištěnec<br>{person.FirstName} {person.LastName}");
@@ -293,7 +304,10 @@ namespace PojisteniApp2.Controllers
             // Save image URL to display into ViewBag
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
 
-            return View(person);
+			// Assign string "disabled" if current user is neither author nor admin
+			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+
+			return View(person);
         }
 
         // POST: People/Delete/5
@@ -381,6 +395,20 @@ namespace PojisteniApp2.Controllers
                 person.ImageData = existingPerson.ImageData;
             }
         }
+
+        private void SetExistingAuthorId(Person person)
+        {
+			// Find existing record in DB
+			Person? existingPerson = _context.Person.Find(person.PersonId);
+			if (existingPerson != null) // Person found
+			{
+				// Detach the existing person from the context to prevent error:
+				// The instance of entity type 'Person' cannot be tracked because another instance
+				// with the same key value for { 'PersonId'} is already being tracked.
+				_context.Entry(existingPerson).State = EntityState.Detached;
+				person.AuthorId = existingPerson.AuthorId;
+			}
+		}
 
         private void RetrieveExistingImageData(Person person)
         {
