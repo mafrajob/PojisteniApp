@@ -13,7 +13,7 @@
 				<h1>Přihlášení uživatele</h1>
 			</div>
 			<div class="col d-flex align-items-center justify-content-end">
-				<button type="submit" class="btn btn-lg btn-primary"><i class="fa-solid fa-check"></i></button>
+				<button type="submit" class="btn btn-lg btn-primary" tabindex="4"><i class="fa-solid fa-check"></i></button>
 			</div>
 		</div>
 		<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5 mt-1">
@@ -21,19 +21,19 @@
 			<div class="col-12 col-md-6 col-lg-5 col-xl-4">
 				<div class="form-group mt-1">
 					<label asp-for="Email"></label>
-					<input asp-for="Email" class="form-control" />
+					<input asp-for="Email" class="form-control" tabindex="1" />
 					<span asp-validation-for="Email" class="text-danger"></span>
 				</div>
 				<div class="form-group mt-1">
 					<label asp-for="Password"></label>
-					<input asp-for="Password" class="form-control" />
+					<input asp-for="Password" class="form-control" tabindex="2" />
 					<span asp-validation-for="Password" class="text-danger"></span>
 				</div>
 				<div class="form-group mt-1">
                     <div class="checkbox">
                         @*Label tag is required so the user can click both checkbox and label next to it*@
                         <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
+                            <input asp-for="RememberMe" tabindex="3" />
                             @Html.DisplayNameFor(model => model.RememberMe)
                         </label>
                     </div>
@@ -44,10 +44,10 @@
 	<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5">
 		<div class="col-12 col-md-6 col-lg-5 col-xl-4">
 			<p>
-				Nemáte založený účet?
+				Je možné, že ještě nemáš založený účet?
 			</p>
-			<a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-outline-primary">
-				Registrovat
+			<a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-outline-primary" tabindex="5">
+				Chci se registrovat
 			</a>
 		</div>
 	</div>

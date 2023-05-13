@@ -6,11 +6,29 @@
 
 <div id="home-carousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Obrázek pojištěnci"></button>
-        <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="1" aria-label="Obrázek pojištění"></button>
+        <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        @*Shows 3 buttons if no user logged in, 2 buttons if user is logged in. The same logic applied to carousel pictures.*@
+        @if (ViewBag.ShowLoginRequest)
+        {
+            <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        }
     </div>
     <div class="carousel-inner">
-        <div class="carousel-item active">
+        @if (ViewBag.ShowLoginRequest)
+        {
+            <div class="carousel-item @ViewBag.Slide1Active">
+                <img class="d-block w-100 img-fluid" src="~/images/img-shared-database.jpg" alt="Sdílená databáze">
+                <div class="container">
+                    <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
+                        <h1>Společná databáze</h1>
+						<p class="lead">Využij příležitost a sdílej s kolegy data o svých klientech. Díky nové aplikaci je to snažší než kdy dříve.</p>
+                        <p><a asp-controller="Account" asp-action="login" class="btn btn-lg btn-primary">Přihlásit se</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="carousel-item @ViewBag.Slide2Active">
             <img class="d-block w-100 img-fluid" src="~/images/img-insured-person.jpg" alt="Pojištěnci">
             <div class="container">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded-3">
@@ -21,7 +39,7 @@
                     }
                     else
                     {
-                        <p class="lead">Neevidujeme žádného pojištěnce:-(</p>
+                        <p class="lead">Zatím nemáme v databázi žádného pojištěnce. Buď první kdo zaeviduje své klienty!</p>
                     }
                     <p><a asp-controller="People" asp-action="Create" class="btn btn-lg btn-primary">Přidat pojištěnce</a></p>
                 </div>
@@ -38,7 +56,7 @@
                     }
                     else
                     {
-                        <p class="lead">Neprodali jsme žádné pojištění:-(</p>
+                        <p class="lead">Žádné uzavřené smlouvy? Tomu nevěříme. Doplň klientům jejich pojištění a vyhraj v soutěži o nejvyšší limit plnění.</p>
                     }
                     <p><a asp-controller="Insurances" asp-action="Create" class="btn btn-lg btn-primary">Uzavřít pojištění</a></p>
                 </div>

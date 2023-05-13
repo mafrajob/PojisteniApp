@@ -2,6 +2,7 @@
 using PojisteniApp2.Models;
 using System.Diagnostics;
 using PojisteniApp2.Data;
+using System.Security.Claims;
 
 namespace PojisteniApp2.Controllers
 {
@@ -27,7 +28,22 @@ namespace PojisteniApp2.Controllers
                 statistics.MaxInsuranceLimit = _context.Insurance.Max(i => i.InsuranceAmount).ToString("# ### ### ###");
             }
 
-            return View(statistics);
+            // Logged user or anonymous visitor?
+            bool isLoggedUser = User.FindFirstValue(ClaimTypes.NameIdentifier) != null;
+            // Viewbags to adjust view content
+            ViewBag.ShowLoginRequest = !isLoggedUser;
+            if (isLoggedUser)
+            {
+                ViewBag.Slide1Active = string.Empty;
+                ViewBag.Slide2Active = "active";
+            }
+            else
+            {
+				ViewBag.Slide1Active = "active";
+				ViewBag.Slide2Active = string.Empty;
+            }
+
+			return View(statistics);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
