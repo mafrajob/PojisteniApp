@@ -41,6 +41,16 @@
 			</div>
 		</div>
 	</form>
+	<div class="row bg-light pt-2 pb-4 py-lg-4 px-3 px-md-5">
+		<div class="col-12 col-md-6 col-lg-5 col-xl-4">
+			<p>
+				Nemáte založený účet?
+			</p>
+			<a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-outline-primary">
+				Registrovat
+			</a>
+		</div>
+	</div>
 </section>
 
 @section Scripts {
