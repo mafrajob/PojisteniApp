@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace PojisteniApp2.Helpers
 {
-    public class UserHelper
+    public static class UserHelper
     {
         public static bool IsAuthorOrAdmin(ClaimsPrincipal user, IAuthor model)
         {
