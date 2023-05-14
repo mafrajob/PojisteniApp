@@ -127,8 +127,8 @@ namespace PojisteniApp2.Controllers
         // GET: Insurances/Create
         public IActionResult Create(int? id)
         {
-            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName");
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", id);
+            ViewData["InsuranceTypeId"] = CreateInsuranceTypeSelectList();
+            ViewData["PersonId"] = CreatePersonSelectList(id); // Custom list of persons created by current user or all persons if current user is admin
             ViewData["IsDefinedPerson"] = false;
             ViewData["CustomTitle"] = "Nové pojištění";
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Create action
@@ -162,7 +162,7 @@ namespace PojisteniApp2.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
-        {   
+        {
             if (ModelState.IsValid)
             {
                 // Set currently logged in user's id as AuthorId
@@ -180,8 +180,8 @@ namespace PojisteniApp2.Controllers
                 // Redirect to defaul action People -> Details if condition above is not true
                 return RedirectToAction("Details", "People", new { id = insurance.PersonId });
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            ViewData["InsuranceTypeId"] = CreateInsuranceTypeSelectList(insurance.InsuranceTypeId);
+            ViewData["PersonId"] = CreatePersonSelectList(insurance.PersonId); // Custom list of persons created by current user or all persons if current user is admin
             ViewData["IsDefinedPerson"] = false;
             ViewData["CustomTitle"] = "Nové pojištění";
             // Person name for the view title
@@ -212,8 +212,8 @@ namespace PojisteniApp2.Controllers
             {
                 return NotFound();
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            ViewData["InsuranceTypeId"] = CreateInsuranceTypeSelectList(insurance.InsuranceTypeId);
+            ViewData["PersonId"] = CreatePersonSelectList(insurance.PersonId); // Custom list of persons created by current user or all persons if current user is admin
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Edit action
             // Assign string "disabled" if current user is neither author nor admin
             ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, insurance) ? string.Empty : "disabled";
@@ -263,8 +263,8 @@ namespace PojisteniApp2.Controllers
                 // Redirect to defaul action Insurances -> Index if condition above is not true
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
-            ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            ViewData["InsuranceTypeId"] = CreateInsuranceTypeSelectList(insurance.InsuranceTypeId);
+            ViewData["PersonId"] = CreatePersonSelectList(insurance.PersonId); // Custom list of persons created by current user or all persons if current user is admin
             // No disabled functionality for POST method of Edit action needed
             ViewBag.Disabled = string.Empty;
             _notyf.Error(_genericErrorMessage);
@@ -357,6 +357,62 @@ namespace PojisteniApp2.Controllers
                 _context.Entry(existingInsurance).State = EntityState.Detached;
                 insurance.AuthorId = existingInsurance.AuthorId;
             }
+        }
+
+        private List<SelectListItem> CreatePersonSelectList(int? selectedPersonId = null)
+        {
+            // Create a list of persons
+            var persons = _context.Person;
+
+            // Create a new list of SelectListItems that includes a dummy value
+            List<SelectListItem> personList = new() { new SelectListItem { Value = "Vyber pojištěnce", Text = "-- Vyber pojištěnce --" } };
+
+            // Add each person to the list of SelectListItems
+            foreach (var person in persons)
+            {
+                // Add to select list only Persons created by current user or all Persons if current user is admin
+                if (UserHelper.IsAdmin(User) || UserHelper.IsAuthor(User, person))
+                {
+                    // Create a new SelectListItem object for the person
+                    SelectListItem item = new()
+                    {
+                        Value = person.PersonId.ToString(),
+                        Text = person.FullNameWithAddress,
+                        Selected = selectedPersonId == person.PersonId
+                    };
+
+                    // Add the SelectListItem to the list
+                    personList.Add(item);
+                }
+            }
+
+            return personList;
+        }
+
+        private List<SelectListItem> CreateInsuranceTypeSelectList(int? selectedInsuranceTypeId = null)
+        {
+            // Create a list of insurance types
+            var insuranceTypes = _context.InsuranceType;
+
+            // Create a new list of SelectListItems that includes a dummy value
+            List<SelectListItem> insuranceTypeList = new() { new SelectListItem { Value = "Vyber typ pojištění", Text = "-- Vyber typ pojištění --" } };
+
+            // Add each insurance type to the list of SelectListItems
+            foreach (var insuranceType in insuranceTypes)
+            {
+                // Create a new SelectListItem object for the insurance type
+                SelectListItem item = new()
+                {
+                    Value = insuranceType.InsuranceTypeId.ToString(),
+                    Text = insuranceType.InsuranceTypeName,
+                    Selected = selectedInsuranceTypeId == insuranceType.InsuranceTypeId
+                };
+
+                // Add the SelectListItem to the list
+                insuranceTypeList.Add(item);
+            }
+
+            return insuranceTypeList;
         }
     }
 }
