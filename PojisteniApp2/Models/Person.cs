@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PojisteniApp2.Models
 {
-    public class Person
+    public class Person : IAuthor
     {
         public int PersonId { get; set; }
 

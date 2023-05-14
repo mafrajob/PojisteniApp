@@ -23,15 +23,13 @@ namespace PojisteniApp2.Controllers
         private readonly float _imageMaxSize;
         private readonly string _defaultImagePath;
         private readonly string _genericErrorMessage = "Opravte zadaná data";
-		private readonly UserManager<IdentityUser> _userManager;
 
-		public PeopleController(ApplicationDbContext context, INotyfService notyf, IConfiguration configuration, UserManager<IdentityUser> userManager)
+		public PeopleController(ApplicationDbContext context, INotyfService notyf, IConfiguration configuration)
         {
             _context = context;
             _notyf = notyf;
             _imageMaxSize = configuration.GetValue<float>("Person:ImageMaxSize");
             _defaultImagePath = configuration?.GetValue<string>("Person:DefaultImagePath") ?? "/images/img-person-default.png";
-			_userManager = userManager;
 		}
 
         // GET: People
@@ -98,9 +96,9 @@ namespace PojisteniApp2.Controllers
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
 
 			// Assign string "disabled" if current user is neither author nor admin
-			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+            ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, person) ? string.Empty : "disabled";
 
-			return View(person);
+            return View(person);
         }
 
         // GET: People/Create
@@ -113,7 +111,7 @@ namespace PojisteniApp2.Controllers
             ViewBag.ImageMaxSize = _imageMaxSize;
 
 			// Assign string "disabled" if no user logged in
-			ViewBag.Disabled = (User.Identity?.IsAuthenticated ?? false) ? string.Empty : "disabled";
+			ViewBag.Disabled = UserHelper.IsLoggedUser(User) ? string.Empty : "disabled";
 
 			return View();
         }
@@ -162,7 +160,7 @@ namespace PojisteniApp2.Controllers
             if (ModelState.IsValid)
             {
                 // Set currently logged in user's id as AuthorId
-                person.AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                person.AuthorId = UserHelper.GetUserId(User);
 				_context.Add(person);
                 await _context.SaveChangesAsync();
                 _notyf.Success($"Přidán pojištěnec<br>{person.FirstName} {person.LastName}");
@@ -196,7 +194,7 @@ namespace PojisteniApp2.Controllers
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString();
 
 			// Assign string "disabled" if current user is neither author nor admin
-			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+			ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, person) ? string.Empty : "disabled";
 
             return View(person);
         }
@@ -305,7 +303,7 @@ namespace PojisteniApp2.Controllers
             ViewBag.ImageDataUrl = CreateImageURL(person.ImageData);
 
 			// Assign string "disabled" if current user is neither author nor admin
-			ViewBag.Disabled = (await IsAuthorOrAdminAsync(person)) ? string.Empty : "disabled";
+			ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, person) ? string.Empty : "disabled";
 
 			return View(person);
         }
@@ -432,31 +430,5 @@ namespace PojisteniApp2.Controllers
             }
             return result;
         }
-
-        private async Task<bool> IsAuthorOrAdminAsync(Person? person = null)
-        {
-			// Get currently logged in user
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                // Get user's roles
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Contains("admin"))
-                {
-                    return true; // User is admin
-                }
-
-                if (person != null) // Person details provided
-                {
-                    // Get user's ID
-					var userId = await _userManager.GetUserIdAsync(user);
-					if (person.AuthorId == userId) 
-					{
-						return true; // User is author
-					}
-				}
-			}
-            return false; // user is neither author nor admin
-		}
     }
 }

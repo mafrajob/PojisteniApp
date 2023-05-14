@@ -3,6 +3,7 @@ using PojisteniApp2.Models;
 using System.Diagnostics;
 using PojisteniApp2.Data;
 using System.Security.Claims;
+using PojisteniApp2.Helpers;
 
 namespace PojisteniApp2.Controllers
 {
@@ -29,7 +30,7 @@ namespace PojisteniApp2.Controllers
             }
 
             // Logged user or anonymous visitor?
-            bool isLoggedUser = User.Identity?.IsAuthenticated ?? false;
+            bool isLoggedUser = UserHelper.IsLoggedUser(User);
 
             // Viewbags to adjust view content
             ViewBag.ShowLoginRequest = !isLoggedUser;
