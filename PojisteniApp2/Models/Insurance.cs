@@ -42,5 +42,8 @@ namespace PojisteniApp2.Models
 
         [Display(Name = "Pojištěnec")]
         public Person? Person { get; set; }
+
+        [StringLength(450)]
+        public string? AuthorId { get; set; }
     }
 }

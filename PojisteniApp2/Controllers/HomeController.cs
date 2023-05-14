@@ -29,7 +29,8 @@ namespace PojisteniApp2.Controllers
             }
 
             // Logged user or anonymous visitor?
-            bool isLoggedUser = User.FindFirstValue(ClaimTypes.NameIdentifier) != null;
+            bool isLoggedUser = User.Identity?.IsAuthenticated ?? false;
+
             // Viewbags to adjust view content
             ViewBag.ShowLoginRequest = !isLoggedUser;
             if (isLoggedUser)

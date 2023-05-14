@@ -113,7 +113,7 @@ namespace PojisteniApp2.Controllers
             ViewBag.ImageMaxSize = _imageMaxSize;
 
 			// Assign string "disabled" if no user logged in
-			ViewBag.Disabled = (User.FindFirstValue(ClaimTypes.NameIdentifier) != null) ? string.Empty : "disabled";
+			ViewBag.Disabled = (User.Identity?.IsAuthenticated ?? false) ? string.Empty : "disabled";
 
 			return View();
         }
