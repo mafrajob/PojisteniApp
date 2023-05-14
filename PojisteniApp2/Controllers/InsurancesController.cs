@@ -149,6 +149,10 @@ namespace PojisteniApp2.Controllers
                     ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" {person.FirstName.Substring(0, 1).ToUpper()}. {person.LastName}");
                 }
             }
+
+            // Assign string "disabled" if no user logged in
+            ViewBag.Disabled = UserHelper.IsLoggedUser(User) ? string.Empty : "disabled";
+
             return View(insurance);
         }
 
@@ -161,6 +165,8 @@ namespace PojisteniApp2.Controllers
         {   
             if (ModelState.IsValid)
             {
+                // Set currently logged in user's id as AuthorId
+                insurance.AuthorId = UserHelper.GetUserId(User);
                 _context.Add(insurance);
                 await _context.SaveChangesAsync();
                 _notyf.Success("Nové pojištění přidáno");
@@ -185,6 +191,10 @@ namespace PojisteniApp2.Controllers
                 ViewData["IsDefinedPerson"] = true;
                 ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
             }
+
+            // No disabled functionality for POST method of Create action needed
+            ViewBag.Disabled = string.Empty;
+
             _notyf.Error(_genericErrorMessage);
             return View(insurance);
         }
@@ -205,6 +215,8 @@ namespace PojisteniApp2.Controllers
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Edit action
+            // Assign string "disabled" if current user is neither author nor admin
+            ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, insurance) ? string.Empty : "disabled";
             return View(insurance);
         }
 
@@ -224,6 +236,8 @@ namespace PojisteniApp2.Controllers
             {
                 try
                 {
+                    // Set AuthorId from existing record, otherwise it will be set to NULL by following update
+                    SetExistingAuthorId(insurance);
                     _context.Update(insurance);
                     await _context.SaveChangesAsync();
                     _notyf.Success($"Změněno pojištění ID {id}");
@@ -251,6 +265,8 @@ namespace PojisteniApp2.Controllers
             }
             ViewData["InsuranceTypeId"] = new SelectList(_context.InsuranceType, "InsuranceTypeId", "InsuranceTypeName", insurance.InsuranceTypeId);
             ViewData["PersonId"] = new SelectList(_context.Person, "PersonId", "FullNameWithAddress", insurance.PersonId);
+            // No disabled functionality for POST method of Edit action needed
+            ViewBag.Disabled = string.Empty;
             _notyf.Error(_genericErrorMessage);
             return View(insurance);
         }
@@ -273,6 +289,10 @@ namespace PojisteniApp2.Controllers
             }
 
             TempData["PreviousUrl"] = Request.Headers["Referer"].ToString(); // Saves URL user is coming from to be used in POST Delete action
+
+            // Assign string "disabled" if current user is neither author nor admin
+            ViewBag.Disabled = UserHelper.IsAuthorOrAdmin(User, insurance) ? string.Empty : "disabled";
+            
             return View(insurance);
         }
 
@@ -323,6 +343,20 @@ namespace PojisteniApp2.Controllers
                 }
             }
             return result;
+        }
+
+        private void SetExistingAuthorId(Insurance insurance)
+        {
+            // Find existing record in DB
+            Insurance? existingInsurance = _context.Insurance.Find(insurance.InsuranceId);
+            if (existingInsurance != null) // Insurance found
+            {
+                // Detach the existing insurance from the context to prevent error:
+                // The instance of entity type 'Insurance' cannot be tracked because another instance
+                // with the same key value for { 'InsuranceId'} is already being tracked.
+                _context.Entry(existingInsurance).State = EntityState.Detached;
+                insurance.AuthorId = existingInsurance.AuthorId;
+            }
         }
     }
 }

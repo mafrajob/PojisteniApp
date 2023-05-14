@@ -4,7 +4,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PojisteniApp2.Models
 {
-    public class Insurance
+    public class Insurance : IAuthor
     {
         [Display(Name = "ID Pojištění")]
         public int InsuranceId { get; set; }
