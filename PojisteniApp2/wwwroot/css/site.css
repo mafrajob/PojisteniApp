@@ -39,3 +39,7 @@ div.dl-local-style dd {
 #choose-img {
     width: 150px;
 }
+
+#navbar-logo {
+    max-height: 1.2rem;
+}
