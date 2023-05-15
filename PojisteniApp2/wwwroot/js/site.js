@@ -16,6 +16,16 @@ function adjustDisabledElements() {
         }
     }
 }
+// Required to activate input mask for any element with attribute data-inputmask
+function iniciateInputmask() {
+    const maskedElements = document.querySelectorAll("[data-inputmask]");
+    for (const element of maskedElements) {
+        Inputmask().mask(element);
+    }
+}
 
-//document.onload event not fired as expected, maybe because of ASP.NET CORE Razor View Engine
-document.addEventListener("DOMContentLoaded", adjustDisabledElements());
+//document.onload event not fired as expected, probably because of ASP.NET CORE Razor View Engine
+document.addEventListener("DOMContentLoaded", function () {
+    adjustDisabledElements();
+    iniciateInputmask();
+});
