@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -121,7 +122,8 @@ namespace PojisteniApp2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
+		[Authorize]
+		public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
             // Default image to display in view
             ViewBag.ImageDataUrl = _defaultImagePath;
@@ -204,7 +206,8 @@ namespace PojisteniApp2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
+		[Authorize]
+		public async Task<IActionResult> Edit(int id, [Bind("PersonId,FirstName,LastName,Email,Phone,Street,City,PostalCode")] Person person)
         {
             if (id != person.PersonId)
             {
@@ -311,7 +314,8 @@ namespace PojisteniApp2.Controllers
         // POST: People/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+		[Authorize]
+		public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Person == null)
             {

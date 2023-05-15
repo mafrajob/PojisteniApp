@@ -4,6 +4,7 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -161,7 +162,8 @@ namespace PojisteniApp2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
+		[Authorize]
+		public async Task<IActionResult> Create([Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
         {
             if (ModelState.IsValid)
             {
@@ -225,7 +227,8 @@ namespace PojisteniApp2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
+		[Authorize]
+		public async Task<IActionResult> Edit(int id, [Bind("InsuranceId,InsuranceTypeId,InsuranceAmount,InsuranceSubject,ValidFrom,ValidTo,PersonId")] Insurance insurance)
         {
             if (id != insurance.InsuranceId)
             {
@@ -299,7 +302,8 @@ namespace PojisteniApp2.Controllers
         // POST: Insurances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+		[Authorize]
+		public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Insurance == null)
             {
