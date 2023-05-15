@@ -9,13 +9,13 @@
         <h1 class="text-capitalize">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-        <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-pen-to-square"></i></a>
-        <a asp-action="Delete" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-trash-can"></i></a>
+        <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.PersonId" tabindex="3"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a asp-action="Delete" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId" tabindex="4"><i class="fa-solid fa-trash-can"></i></a>
     </div>
 </div>
 <div class="row dl-local-style bg-light py-2 py-md-4 px-3 px-md-5 mt-1 text-center text-sm-start">
 	<div class="col-12 col-sm-auto me-2 me-md-4 mb-3 mb-sm-0">
-		<a asp-action="Edit" asp-route-id="@Model?.PersonId">
+		<a asp-action="Edit" asp-route-id="@Model?.PersonId" tabindex="1">
 			<img src="@ViewBag.ImageDataUrl" class="img-fluid img-profile" />
 		</a>
 	</div>
@@ -26,7 +26,7 @@
 				@Html.DisplayNameFor(model => model.Email)
 			</dt>
 			<dd>
-				@Html.DisplayFor(model => model.Email)
+				<span tabindex="2">@Html.DisplayFor(model => model.Email)</span>
 			</dd>
 		</div>
 		<div>
@@ -64,7 +64,7 @@
 	</div>
 	<div class="col d-flex align-items-center justify-content-end">
 		<span class="disabled-title-wrapper">
-			<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary @ViewBag.Disabled"><i class="fa-solid fa-plus"></i></a>
+			<a asp-controller="Insurances" asp-action="Create" asp-route-id="@Model?.PersonId" class="btn btn-lg btn-primary @ViewBag.Disabled" tabindex="5"><i class="fa-solid fa-plus"></i></a>
 		</span>
 	</div>
 </div>

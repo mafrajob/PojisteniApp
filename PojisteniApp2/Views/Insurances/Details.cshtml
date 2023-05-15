@@ -9,8 +9,8 @@
         <h1>@ViewData["Title"]</h1>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-        <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.InsuranceId"><i class="fa-solid fa-pen-to-square"></i></a>
-        <a asp-controller="People" asp-action="Details" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId"><i class="fa-solid fa-user"></i></a>
+        <a asp-action="Edit" class="btn btn-lg btn-secondary" asp-route-id="@Model?.InsuranceId" tabindex="1"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a asp-controller="People" asp-action="Details" class="btn btn-lg btn-secondary ms-1" asp-route-id="@Model?.PersonId" tabindex="2"><i class="fa-solid fa-user"></i></a>
     </div>
 </div>
 <div class="row dl-local-style bg-light py-2 py-md-4 px-3 px-md-5 mt-1 text-center text-sm-start">

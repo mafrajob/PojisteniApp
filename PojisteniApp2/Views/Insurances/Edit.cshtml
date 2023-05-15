@@ -11,7 +11,7 @@
         </div>
         <div class="col d-flex align-items-center justify-content-end">
             <span class="disabled-title-wrapper">
-                <button type="submit" class="btn btn-lg btn-primary @ViewBag.Disabled"><i class="fa-solid fa-check"></i></button>
+                <button type="submit" class="btn btn-lg btn-primary @ViewBag.Disabled" tabindex="7"><i class="fa-solid fa-check"></i></button>
             </span>
         </div>
     </div>
@@ -21,34 +21,34 @@
         <div class="col-12 col-md-6 col-lg-5 col-xl-4">
             <div class="form-group mt-1">
                 <label asp-for="InsuranceType" class="control-label"></label>
-                <select asp-for="InsuranceTypeId" class="form-control" asp-items="ViewBag.InsuranceTypeId"></select>
+                <select asp-for="InsuranceTypeId" class="form-control" asp-items="ViewBag.InsuranceTypeId" tabindex="1"></select>
                 <span asp-validation-for="InsuranceTypeId" class="text-danger"></span>
             </div>
             <div class="form-group mt-1">
                 <label asp-for="InsuranceAmount" class="control-label"></label>
-                <input asp-for="InsuranceAmount" class="form-control" />
+                <input asp-for="InsuranceAmount" class="form-control" tabindex="2" />
                 <span asp-validation-for="InsuranceAmount" class="text-danger"></span>
             </div>
             <div class="form-group mt-1">
                 <label asp-for="InsuranceSubject" class="control-label"></label>
-                <input asp-for="InsuranceSubject" class="form-control" />
+                <input asp-for="InsuranceSubject" class="form-control" tabindex="3" />
                 <span asp-validation-for="InsuranceSubject" class="text-danger"></span>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-5 col-xl-4">
             <div class="form-group mt-1">
                 <label asp-for="ValidFrom" class="control-label"></label>
-                <input asp-for="ValidFrom" class="form-control" />
+                <input asp-for="ValidFrom" class="form-control" tabindex="4" />
                 <span asp-validation-for="ValidFrom" class="text-danger"></span>
             </div>
             <div class="form-group mt-1">
                 <label asp-for="ValidTo" class="control-label"></label>
-                <input asp-for="ValidTo" class="form-control" />
+                <input asp-for="ValidTo" class="form-control" tabindex="5" />
                 <span asp-validation-for="ValidTo" class="text-danger"></span>
             </div>
             <div class="form-group mt-1">
                 <label asp-for="Person" class="control-label"></label>
-                <select asp-for="PersonId" class="form-control" asp-items="ViewBag.PersonId"></select>
+                <select asp-for="PersonId" class="form-control" asp-items="ViewBag.PersonId" tabindex="6"></select>
                 <span asp-validation-for="PersonId" class="text-danger"></span>
             </div>
         </div>
