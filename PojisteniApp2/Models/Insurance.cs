@@ -16,7 +16,7 @@ namespace PojisteniApp2.Models
         public InsuranceType? InsuranceType { get; set; }
 
         [Display(Name = "Částka")]
-        [Range(1, 1000000000, ErrorMessage = "{0} musí být mezi {1} a {2}")]
+        [Range(1000, 1000000000, ErrorMessage = "{0} musí být mezi {1} a {2}")]
         [DisplayFormat(DataFormatString = "{0:# ### ### ### Kč}")]
         public int InsuranceAmount { get; set; }
 

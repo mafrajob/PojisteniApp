@@ -191,7 +191,7 @@ namespace PojisteniApp2.Controllers
             if (person != null)
             {
                 ViewData["IsDefinedPerson"] = true;
-                ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" pro {person.FullName}");
+                ViewData["CustomTitle"] = ViewData["CustomTitle"] + string.Format($" {person.FirstName.Substring(0, 1).ToUpper()}. {person.LastName}");
             }
 
             // No disabled functionality for POST method of Create action needed

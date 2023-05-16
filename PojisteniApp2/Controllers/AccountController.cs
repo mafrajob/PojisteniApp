@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PojisteniApp2.Models;
+using System.Security.Claims;
 using static System.Net.WebRequestMethods;
 
 namespace PojisteniApp2.Controllers
@@ -12,12 +14,14 @@ namespace PojisteniApp2.Controllers
 	{
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly INotyfService _notyf;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, INotyfService notyf)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-		}
+            _notyf = notyf;
+        }
 
         [HttpGet]
         public IActionResult Register(string? returnUrl = null)
@@ -38,6 +42,7 @@ namespace PojisteniApp2.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    _notyf.Success($"Registrován uživatel<br>{user.UserName}");
                     return RedirectToLocal(returnUrl);
                 }
 
@@ -47,6 +52,7 @@ namespace PojisteniApp2.Controllers
                 }
             }
 
+            _notyf.Error("Chyba registrace");
             return View(model);
         }
 
@@ -67,23 +73,29 @@ namespace PojisteniApp2.Controllers
 				var validationResult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 				if (validationResult.Succeeded)
 				{
-					return RedirectToLocal(returnUrl);
+                    _notyf.Success($"Přihlášen uživatel<br>{model.Email}");
+                    return RedirectToLocal(returnUrl);
 				}
 				else
 				{
 					ModelState.AddModelError(string.Empty, "Neplatné přihlašovací údaje");
-					return View(model);
+                    _notyf.Error("Chyba přihlášení");
+                    return View(model);
 				}
 			}
 
-			// Back to login form if invalid values provided
-			return View(model);
+            // Back to login form if invalid values provided
+            _notyf.Error("Chyba přihlášení");
+            return View(model);
 		}
 
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();
-			return RedirectToAction("Index", "Home");
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string message = (userId != null) ? string.Format($"Odhlášen uživatel<br>{await _userManager.FindByIdAsync(userId)}") : "Uživatel odhlášen";
+            _notyf.Success(message);
+            return RedirectToAction("Index", "Home");
 		}
 
 		private IActionResult RedirectToLocal(string? returnUrl)
