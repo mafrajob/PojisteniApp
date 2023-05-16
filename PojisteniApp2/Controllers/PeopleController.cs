@@ -372,12 +372,11 @@ namespace PojisteniApp2.Controllers
         /// <returns>Validation result</returns>
         private bool IsInSizeRange(float maxSize, IFormFile file)
         {
-            bool result = true;
             if (file.Length > maxSize * 1024 * 1024) // maxSize in bytes
             {
-                result = false;
+                return false;
             }
-            return result;
+            return true;
         }
 
         private void SetExistingImageData(Person person)
@@ -421,7 +420,6 @@ namespace PojisteniApp2.Controllers
 
         private bool TryGetPreviousUrl(out string? previousUrl)
         {
-            bool result = false;
             previousUrl = null;
             // Check if URL user is coming from is available
             if (TempData.ContainsKey("PreviousUrl"))
@@ -429,10 +427,10 @@ namespace PojisteniApp2.Controllers
                 if (TempData["PreviousUrl"] != null)
                 {
                     previousUrl = TempData["PreviousUrl"].ToString();
-                    result = true;
+                    return true;
                 }
             }
-            return result;
+            return false;
         }
     }
 }
