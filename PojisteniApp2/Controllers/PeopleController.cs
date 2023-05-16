@@ -372,11 +372,7 @@ namespace PojisteniApp2.Controllers
         /// <returns>Validation result</returns>
         private bool IsInSizeRange(float maxSize, IFormFile file)
         {
-            if (file.Length > maxSize * 1024 * 1024) // maxSize in bytes
-            {
-                return false;
-            }
-            return true;
+            return !(file.Length > maxSize * 1024 * 1024);
         }
 
         private void SetExistingImageData(Person person)
