@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -159,7 +161,10 @@ namespace PojisteniApp2.Controllers
                 }
             }
 
-            if (ModelState.IsValid)
+            // Server side validations
+            RunServerValidations(person);
+
+			if (ModelState.IsValid)
             {
                 // Set currently logged in user's id as AuthorId
                 person.AuthorId = UserHelper.GetUserId(User);
@@ -252,7 +257,10 @@ namespace PojisteniApp2.Controllers
                 }
             }
 
-            if (ModelState.IsValid)
+			// Server side validations
+			RunServerValidations(person);
+
+			if (ModelState.IsValid)
             {
                 try
                 {
@@ -428,5 +436,94 @@ namespace PojisteniApp2.Controllers
             }
             return false;
         }
-    }
+
+		// Email validation based on tutorial https://learn.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+		private bool IsValidEmail(string email)
+		{
+			if (string.IsNullOrWhiteSpace(email))
+				return false;
+
+			try
+			{
+				// Normalize the domain
+				email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+									  RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
+				// Examines the domain part of the email and normalizes it.
+				string DomainMapper(Match match)
+				{
+					// Use IdnMapping class to convert Unicode domain names.
+					var idn = new IdnMapping();
+
+					// Pull out and process domain name (throws ArgumentException on invalid)
+					string domainName = idn.GetAscii(match.Groups[2].Value);
+
+					return match.Groups[1].Value + domainName;
+				}
+			}
+			catch (RegexMatchTimeoutException e)
+			{
+				return false;
+			}
+			catch (ArgumentException e)
+			{
+				return false;
+			}
+
+			try
+			{
+				return Regex.IsMatch(email,
+					@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+					RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+			}
+			catch (RegexMatchTimeoutException)
+			{
+				return false;
+			}
+		}
+
+		private bool IsValidPhone(string phone)
+		{
+			// evaluates as valid if contains 9 numbers + 2 whitespaces from input mask at the index 3 and 7		
+			if (phone.Length == 11 && phone[3].Equals(' ') && phone[7].Equals(' '))
+			{
+				string phoneWithoutMask = phone.Remove(3, 1).Remove(6, 1);
+				if (phoneWithoutMask.All(char.IsNumber))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private bool IsValidPostalCode(string postalCode)
+		{
+			// evaluates as valid if contains 5 numbers + 1 whitespace from input mask at the index 3
+			if (postalCode.Length == 6 && postalCode[3].Equals(' '))
+			{
+				string postalCodeWithoutMask = postalCode.Remove(3, 1);
+				if (postalCodeWithoutMask.All(char.IsNumber))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+        private void RunServerValidations(Person person)
+        {
+			if (!IsValidEmail(person.Email))
+			{
+				ModelState.AddModelError("Email", "Neplatný formát e-mailu");
+			}
+			if (!IsValidPhone(person.Phone))
+			{
+				ModelState.AddModelError("Phone", "Neplatný formát telefonu");
+			}
+			if (!IsValidPostalCode(person.PostalCode))
+			{
+				ModelState.AddModelError("PostalCode", "Neplatný formát PSČ");
+			}
+		}
+	}
 }
