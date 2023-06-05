@@ -52,7 +52,7 @@ namespace PojisteniApp2.Models
         [Display(Name = "Celé jméno a bydliště")]
         public string FullNameWithAddress { get { return $"{FullName} ({Address})"; } }
 
-        public List<Insurance> Insurances { get; set; } = new List<Insurance>();
+        public virtual List<Insurance>? Insurances { get; set; }
 
         [Display(Name = "Profilový obrázek")]
         public byte[] ImageData { get; set; } = Array.Empty<byte>();
